@@ -1,1 +1,1 @@
-Ce programme est un projet d'étude supervisé par Hyperskill.org.
+Ces programmes sont des projets d'étude supervisé par Hyperskill.org.
