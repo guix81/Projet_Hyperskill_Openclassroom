@@ -1,4 +1,3 @@
-
 """
 print('''Prices: 
 Bubblegum: $2
@@ -11,7 +10,7 @@ Pancake: $3.2''')
 
 produits = ['Bubblegum', 'Toffee', 'Ice cream', 'Milk chocolate', 'Doughnut', 'Pancake']
 list_produit = dict.fromkeys(produits, 0)
-chaine = ''
+income_chaine = ''
 
 list_produit['Bubblegum'] = 202
 list_produit['Toffee'] = 118
@@ -25,10 +24,10 @@ income = sum(list_produit.values())
 print('Earned amount:')
 
 for key, val in list_produit.items():
-    chaine = chaine + key + ': $' + str(val) + '\n'
-chaine = chaine + '\nIncome: $' + str(income)
+    income_chaine = income_chaine + key + ': $' + str(val) + '\n'
+income_chaine = income_chaine + '\nIncome: $' + str(income)
 
-print(chaine)
+print(income_chaine)
 
 staff_expenses = int(input('Staff expenses: '))
 other_expenses = int(input('Other expenses: '))
