@@ -60,24 +60,30 @@ def diff_calc_monthly_payments(nb_months, interet, loan_principal):
     print('Overpayment = ', Overpayment - loan_principal)
 
 if args.type == 'annuity':
-    if args.payment != None and args.principal != None:
+    if args.payment != None and args.principal != None and args.interest != None:
         if args.payment < 0 or args.principal < 0 or args.interest < 0:
             print('Incorrect parameters.')
             exit()
         annuity_calc_nb_months(args.payment, args.interest, args.principal)
-    elif args.periods != None and args.principal != None:
+    elif args.periods != None and args.principal != None and args.interest != None:
         if args.periods < 0 or args.principal < 0 or args.interest < 0:
             print('Incorrect parameters.')
             exit()
         annuity_calc_monthly_payments(args.periods, args.interest, args.principal)
-    elif args.payment != None and args.periods != None:
+    elif args.payment != None and args.periods != None and args.interest != None:
         if args.payment < 0 or args.periods < 0 or args.interest < 0:
             print('Incorrect parameters.')
             exit()
         annuity_calc_loan_principal(args.payment, args.interest, args.periods)
+    else:
+        print('Incorrect parameters.')
 elif args.type == 'diff':
-    if args.periods != None and args.principal != None:
+    if args.periods != None and args.principal != None and args.interest != None:
         if args.periods < 0 or args.principal < 0 or args.interest < 0:
             print('Incorrect parameters.')
             exit()
         diff_calc_monthly_payments(args.periods, args.interest, args.principal)
+    else:
+        print('Incorrect parameters.')
+else:
+    print('Incorrect parameters.')
