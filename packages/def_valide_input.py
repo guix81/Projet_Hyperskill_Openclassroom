@@ -11,15 +11,13 @@ def valide_input(chaine_input, chaine_auto, chaine_no_auto):
     if type(chaine_input) == type('a'):  ##True si chaine_input = str [token_chaine]
         token_chaine = True
     chaine_input = str(chaine_input)
-    #if autorisation_chaine == True:  #True si chaine_input est dans la liste des caractère autoriser(chaine_auto) [token_auto]
-    chaine_auto = set(chaine_auto)
+    chaine_auto = set(chaine_auto)  #True si chaine_input est dans la liste des caractère autoriser(chaine_auto) [token_auto]
     for str_in in chaine_input:
         if str_in not in chaine_auto:
             token_auto = False
         else:
             token_auto = True
-    #elif autorisation_chaine == False:  #True si chaine_input est dans la liste des caractère non-autoriser(chaine_no_auto) [token_no_auto]
-    chaine_no_auto = set(chaine_no_auto)
+    chaine_no_auto = set(chaine_no_auto) #True si chaine_input est dans la liste des caractère non-autoriser(chaine_no_auto) [token_no_auto]
     for str_in in chaine_input:
             if str_in in chaine_no_auto:
                 token_no_auto = True

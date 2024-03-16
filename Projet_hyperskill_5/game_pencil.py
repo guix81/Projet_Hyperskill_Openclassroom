@@ -1,6 +1,7 @@
 import string
 import def_valide_input
 
+
 def valide_input(chaine_input, chaine_auto, chaine_no_auto):
     token_chaine = False
     token_num = False
