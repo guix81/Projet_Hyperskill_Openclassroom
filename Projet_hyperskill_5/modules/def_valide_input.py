@@ -1,4 +1,4 @@
-def valide_input(chaine_input, chaine_auto, chaine_no_auto):
+def valide_input(chaine_input, chaine_auto, chaine_no_auto):  #Attention, le type de variable d'entrée doit rester une chaine.
     token_alpha = None
     token_num = None
     token_auto = None
@@ -13,17 +13,18 @@ def valide_input(chaine_input, chaine_auto, chaine_no_auto):
     else:
         token_alpha = False
     chaine_input = str(chaine_input)
-    chaine_auto = set(chaine_auto)  #True si chaine_input est dans la liste des caractère autoriser(chaine_auto) [token_auto]
+    chaine_auto = set(chaine_auto)  #True si chaine_input est 'seulement' dans la liste des caractère autoriser(chaine_auto) [token_auto]
     for str_in in chaine_input:
         if str_in not in chaine_auto:
             token_auto = False
         else:
             token_auto = True
-    chaine_no_auto = set(chaine_no_auto) #True si chaine_input est dans la liste des caractère non-autoriser(chaine_no_auto) [token_no_auto]
+    chaine_no_auto = set(chaine_no_auto) #True si chaine_input est 'seulement' dans la liste des caractère non-autoriser(chaine_no_auto) [token_no_auto]
     for str_in in chaine_input:
             if str_in in chaine_no_auto:
                 token_no_auto = True
             else:
                 token_no_auto = False
     return token_num, token_alpha, token_auto, token_no_auto  #revoie une liste bool [token_num, token_chaine, token_auto, token_no_auto]
+
 
