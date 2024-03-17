@@ -1,6 +1,6 @@
 def valide_input(chaine_input, chaine_auto, chaine_no_auto):
-    token_chaine = False
-    token_num = False
+    token_alpha = None
+    token_num = None
     token_auto = None
     token_no_auto = None
     try:  #True si chaine_input = numeric [token_num]
@@ -8,8 +8,10 @@ def valide_input(chaine_input, chaine_auto, chaine_no_auto):
         token_num = True
     except(ValueError):
         token_num = False
-    if type(chaine_input) == type('a'):  ##True si chaine_input = str [token_chaine]
-        token_chaine = True
+    if type(chaine_input) == type('a'):  ##True si chaine_input = alphabétique or alphanumérique [token_chaine]
+        token_alpha = True
+    else:
+        token_alpha = False
     chaine_input = str(chaine_input)
     chaine_auto = set(chaine_auto)  #True si chaine_input est dans la liste des caractère autoriser(chaine_auto) [token_auto]
     for str_in in chaine_input:
@@ -23,5 +25,5 @@ def valide_input(chaine_input, chaine_auto, chaine_no_auto):
                 token_no_auto = True
             else:
                 token_no_auto = False
-    return token_num, token_chaine, token_auto, token_no_auto  #revoie une liste bool [token_num, token_chaine, token_auto, token_no_auto]
+    return token_num, token_alpha, token_auto, token_no_auto  #revoie une liste bool [token_num, token_chaine, token_auto, token_no_auto]
 
