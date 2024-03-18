@@ -1,6 +1,7 @@
 import string
 
-from modules.def_valide_input import valide_input
+from modules.fonction import valide_input
+from modules.fonction import bot_pencil
 
 def first_player(name_1, name_2):  #définit le jeton premier joueur
     while True:
@@ -31,6 +32,7 @@ while True:
     else:
         print('The number of pencils should be numeric')
 n_pencil_max = int(n_pencil_max)
+PENCIL_MAX = n_pencil_max
 
 first_name = first_player('John', 'Jack')
 token_john = False
@@ -47,8 +49,7 @@ while n_pencil_max >= 0:
         print("John's turn:")
         while True:
             n_barre = input()
-            y = valide_input(n_barre, '123', '')
-            print(y)
+            y = valide_input(n_barre, '123', '-')
             if (y[2] != True) or (int(n_barre) > 3) or (y[1] == True):
                 print("Possible values: '1', '2' or '3'")
             elif int(n_barre) > n_pencil_max:
@@ -65,17 +66,9 @@ while n_pencil_max >= 0:
             break
     elif token_jack == True:
         print("Jack's turn:")
-        while True:
-            n_barre = input()
-            z = valide_input(n_barre, '123', '')
-            if z[2] != True or (int(n_barre) > 3) or (z[1] == True):
-                print("Possible values: '1', '2' or '3'")
-            elif int(n_barre) > n_pencil_max:
-                print('Too many pencils were taken')
-            else:
-                break
-        n_barre = int(n_barre)
+        n_barre = bot_pencil(n_pencil_max, PENCIL_MAX)
         n_pencil_max = n_pencil_max - n_barre
+        print(n_barre)
         print(n_pencil_max * '|')
         token_john = True
         token_jack = False

@@ -17,12 +17,14 @@ def valide_input(chaine_input, chaine_auto, chaine_no_auto):  #Attention, le typ
     for str_in in chaine_input:
         if str_in not in chaine_auto:
             token_auto = False
+            break
         else:
             token_auto = True
     chaine_no_auto = set(chaine_no_auto) #True si chaine_input est 'seulement' dans la liste des caractère non-autoriser(chaine_no_auto) [token_no_auto]
     for str_in in chaine_input:
             if str_in in chaine_no_auto:
                 token_no_auto = True
+                break
             else:
                 token_no_auto = False
     return token_num, token_alpha, token_auto, token_no_auto  #revoie une liste bool [token_num, token_chaine, token_auto, token_no_auto]
