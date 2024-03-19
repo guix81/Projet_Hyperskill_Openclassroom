@@ -1,0 +1,1 @@
+Vous entrerez dans les profondeurs du  os module, vous permettant d'effectuer de nombreuses opérations avec des fichiers et des dossiers sur votre ordinateur. Apprenez à vérifier les paramètres des fichiers et à suivre les opérations pour les inverser en cas de besoin. En petit bonus, familiarisez-vous avec les commandes Unix de base. 
