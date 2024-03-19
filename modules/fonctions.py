@@ -29,3 +29,13 @@ def valide_input(chaine_input, chaine_auto, chaine_no_auto):  #Attention, le typ
                 token_no_auto = False
     return token_num, token_alpha, token_auto, token_no_auto  #revoie une liste bool [token_num, token_chaine, token_auto, token_no_auto]
 
+def seek_chaine(chaine_1, chaine_2):
+    if chaine_2 in chaine_1:
+        return True
+    else:
+        return False
+
+    
+
+
+print(seek_chaine('popole est dans la place', 'popoles'))
