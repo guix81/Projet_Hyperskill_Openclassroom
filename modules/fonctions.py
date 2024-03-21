@@ -35,7 +35,3 @@ def seek_chaine(chaine_1, chaine_2):
     else:
         return False
 
-    
-
-
-print(seek_chaine('popole est dans la place', 'popoles'))
