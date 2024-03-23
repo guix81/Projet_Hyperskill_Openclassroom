@@ -29,9 +29,49 @@ def valide_input(chaine_input, chaine_auto, chaine_no_auto):  #Attention, le typ
                 token_no_auto = False
     return token_num, token_alpha, token_auto, token_no_auto  #revoie une liste bool [token_num, token_chaine, token_auto, token_no_auto]
 
-def seek_chaine(chaine_1, chaine_2):
-    if chaine_2 in chaine_1:
-        return True
+def rm(chaine):  #supprime un fichier ou un répertoire spécifié os.remove() chutil.rmtree() [en construction]
+    chaine = chaine.replace('rm ', '')
+    token = None
+    if chaine == '':
+        print('Specify the file or directory')
     else:
-        return False
-
+        os.chdir(chaine)
+        path_parent = os.path.dirname(os.getcwd())
+        current_path = os.getcwd()
+        os.chdir(path_parent)
+        if os.path.isdir(current_path):
+            try:
+                os.remove(current_path)
+                token = True
+            except OSError:
+                token = False
+                print('erreur3')
+            if token == False:
+                while True:
+                    path_parent = os.path.dirname(os.getcwd())
+                    current_path = os.getcwd()
+                    os.chdir(current_path)
+                    list_filedir = os.listdir(current_path)
+                    for y in list_filedir:
+                        if os.path.isdir(path_parent + '\\' + y):
+                            os.chdir(path_parent + '\\' + y)
+                            break
+                        else:
+                            os.remove(path_parent + '\\' + y)
+                    listbool = []
+                    [listbool.append(os.path.isdir(path_parent + '\\' + x)) for x in range(len(list_filedir))]
+                    if False in listbool:
+                        print('listbool')
+                        break
+                    else:
+                        print('nolistbool')
+                        break
+            else:
+                print('erreur1')
+        elif os.path.isfile(current_path):
+            try:
+                os.remove(current_path)
+            except FileNotFoundError:
+                print('No such file or directory')       
+        else:
+            print('erreur2')
