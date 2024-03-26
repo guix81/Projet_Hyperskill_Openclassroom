@@ -1,12 +1,9 @@
 import os
-import time
-import shutil
 
 from module.fonctions import pwd, cd, cd_racine, quite, ls, ls_l, ls_lh, rm, mv, mkdir
 
 print('Input the command')
 list_command = ('pwd', 'cd..', 'cd ', 'quite', 'ls', 'ls -l', 'ls -lh', 'rm ', 'mv', 'mkdir')
-list_name = []
 while True:
     chaine = input()
     while True:
@@ -29,15 +26,17 @@ while True:
     elif chaine == 'cd..':
         cd_racine()
     elif chaine == 'ls':
-        ls(list_name)
+        ls()
     elif chaine == 'ls -l':
-        ls_l(list_name)
+        ls_l()
     elif chaine == 'ls -lh':
-        ls_lh(list_name)
+        ls_lh()
     elif chaine.startswith('rm '):
         rm(chaine)
-    elif chaine == 'mv':
-        mv()
-    elif chaine == 'mkdir':
+    elif chaine.startswith('rv '):
+        mv(chaine)
+    elif chaine.startswith('mkdir '):
         mkdir()
+
+
     

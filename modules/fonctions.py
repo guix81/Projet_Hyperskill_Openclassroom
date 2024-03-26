@@ -1,3 +1,5 @@
+import os
+
 def valide_input(chaine_input, chaine_auto, chaine_no_auto):  #Attention, le type de variable d'entrée doit rester une chaine.
     token_alpha = None
     token_num = None
@@ -29,49 +31,34 @@ def valide_input(chaine_input, chaine_auto, chaine_no_auto):  #Attention, le typ
                 token_no_auto = False
     return token_num, token_alpha, token_auto, token_no_auto  #revoie une liste bool [token_num, token_chaine, token_auto, token_no_auto]
 
-def rm(chaine):  #supprime un fichier ou un répertoire spécifié os.remove() chutil.rmtree() [en construction]
-    chaine = chaine.replace('rm ', '')
-    token = None
-    if chaine == '':
-        print('Specify the file or directory')
-    else:
-        os.chdir(chaine)
-        path_parent = os.path.dirname(os.getcwd())
-        current_path = os.getcwd()
-        os.chdir(path_parent)
-        if os.path.isdir(current_path):
-            try:
-                os.remove(current_path)
-                token = True
-            except OSError:
-                token = False
-                print('erreur3')
-            if token == False:
-                while True:
-                    path_parent = os.path.dirname(os.getcwd())
-                    current_path = os.getcwd()
-                    os.chdir(current_path)
-                    list_filedir = os.listdir(current_path)
-                    for y in list_filedir:
-                        if os.path.isdir(path_parent + '\\' + y):
-                            os.chdir(path_parent + '\\' + y)
-                            break
-                        else:
-                            os.remove(path_parent + '\\' + y)
-                    listbool = []
-                    [listbool.append(os.path.isdir(path_parent + '\\' + x)) for x in range(len(list_filedir))]
-                    if False in listbool:
-                        print('listbool')
-                        break
-                    else:
-                        print('nolistbool')
-                        break
-            else:
-                print('erreur1')
-        elif os.path.isfile(current_path):
-            try:
-                os.remove(current_path)
-            except FileNotFoundError:
-                print('No such file or directory')       
-        else:
-            print('erreur2')
+def id_path(chaine):  #identification du type de chemin (absolu, relatif)
+    id = 0
+    list_chaine = []
+    dirfile_cible = ''
+    path_parent = ''
+    if chaine.startswith('C:\\'):
+        id = 1
+    elif chaine.startswith('.\\'):
+        id = 2
+    elif not chaine.startswith('.\\') and not chaine.startswith('C:\\'):
+        id = 3
+    if id == 1 or id == 2:
+        list_chaine = chaine.split('\\')
+        dirfile_cible = list_chaine[-1]
+        for i in range(len(list_chaine)):
+            if list_chaine[i] != list_chaine[-1]:
+                path_parent = path_parent + list_chaine[i] + '\\'
+    elif id == 3:
+        dirfile_cible = chaine
+    return path_parent, dirfile_cible, id  #retourne respectivement le chemin parent, le dossier/fichier cible et le type de chemin
+
+
+
+    
+
+
+    
+
+#id_path("C:\\Users\\guix6\\Documents\\GitHub\\Projet_Hyperskill\\Projet_hyperskill_7\\caca gogo")
+#id_path(".\\Projet_hyperskill_7\\caca gogo")
+#id_path("caca gogo")
