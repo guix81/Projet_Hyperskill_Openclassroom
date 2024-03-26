@@ -27,10 +27,13 @@ def pwd():
 
 def cd(chaine):  #déplace l'espace de travail vers le chemin spécifié
     chaine = chaine.replace('cd ', '')
-    try:
-        os.chdir(chaine)
-        print(os.getcwd())
-    except FileNotFoundError:
+    if os.path.isdir(chaine):
+        try:
+            os.chdir(chaine)
+            print(os.getcwd())
+        except FileNotFoundError:
+            print('No such file or directory')
+    else:
         print('No such file or directory')
 
 def quite():  #quitte le programme
@@ -43,7 +46,7 @@ def cd_racine():  #déplace l'espace de travail vers le chemin parent
 def ls():  #liste de dossiers et de fichiers dans le répertoire actuelle
     list_name = []
     list_name = os.listdir(os.getcwd())
-    [print(x) for x in list_name if os.path.isdir(list_name[list_name.index(x)])]
+    [print(x) for x in list_name if os.path.isdir(list_name[list_name.index(x)]) and not '__pycache__']
     [print(x) for x in list_name if os.path.isfile(list_name[list_name.index(x)])]
 
 def ls_l():  ##liste de dossiers et de fichiers dans le répertoire actuelle avec la taille en octets
@@ -176,8 +179,3 @@ def mv(chaine):  #renomme n'importe quel fichier ou répertoire
 
 
 
-#mv("C:\\Users\\guix6\\Documents\\GitHub\\Projet_Hyperskill\\Projet_hyperskill_7\\vive la democratie Projet_hyperskill_7\\vive la")
-#mkdir(".\\Projet_hyperskill_7\\cac")
-#cd(".\\Projet_hyperskill_7\\popo.txt")
-#rm("cac")
-#print(id_path("Projet_hyperskill_7\\caca gogo"))
