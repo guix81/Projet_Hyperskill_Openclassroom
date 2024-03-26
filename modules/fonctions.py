@@ -59,6 +59,4 @@ def id_path(chaine):  #identification du type de chemin (absolu, relatif)
 
     
 
-#id_path("C:\\Users\\guix6\\Documents\\GitHub\\Projet_Hyperskill\\Projet_hyperskill_7\\caca gogo")
-#id_path(".\\Projet_hyperskill_7\\caca gogo")
-#id_path("caca gogo")
+
