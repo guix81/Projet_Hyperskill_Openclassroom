@@ -56,7 +56,3 @@ def id_path(chaine):  #identification du type de chemin (absolu, relatif)
 
     
 
-
-    
-
-

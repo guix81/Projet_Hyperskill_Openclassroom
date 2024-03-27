@@ -3,7 +3,7 @@ import os
 from module.fonctions import pwd, cd, cd_racine, quite, ls, ls_l, ls_lh, rm, mv, mkdir
 
 print('Input the command')
-list_command = ('pwd', 'cd..', 'cd ', 'quite', 'ls', 'ls -l', 'ls -lh', 'rm ', 'mv', 'mkdir')
+list_command = ('pwd', 'cd..', 'cd', 'quite', 'ls', 'ls -l', 'ls -lh', 'rm', 'mv', 'mkdir')
 while True:
     chaine = input()
     while True:
@@ -15,7 +15,7 @@ while True:
             break
     if chaine == 'pwd':
         pwd()
-    elif chaine.startswith('cd '):
+    elif chaine.startswith('cd'):
         try:
             cd(chaine)
         except(OSError):
@@ -31,12 +31,12 @@ while True:
         ls_l()
     elif chaine == 'ls -lh':
         ls_lh()
-    elif chaine.startswith('rm '):
+    elif chaine.startswith('rm'):
         rm(chaine)
-    elif chaine.startswith('rv '):
+    elif chaine.startswith('mv'):
         mv(chaine)
-    elif chaine.startswith('mkdir '):
-        mkdir()
+    elif chaine.startswith('mkdir'):
+        mkdir(chaine)
 
 
     

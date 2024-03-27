@@ -1,6 +1,16 @@
 import os
 import shutil
 
+def chaine_cond(chaine):  #vérifie l'existance du nombre d'arguments aprés la commande (ex: mv arg1 arg2)
+    chaine_prime = chaine.split(' ')
+    list_bool = []
+    for i in chaine_prime:
+        if i != '':
+            list_bool.append(True)
+        else:
+            list_bool.append(False)
+    return list_bool
+
 def id_path(chaine):  #identification du type de chemin (absolu, relatif)
     id = 0
     list_chaine = []
@@ -26,7 +36,7 @@ def pwd():
     print(os.getcwd())  #affiche le chemin de l'espace de travail
 
 def cd(chaine):  #déplace l'espace de travail vers le chemin spécifié
-    chaine = chaine.replace('cd ', '')
+    chaine = chaine.replace('cd', '').strip(' ')
     if os.path.isdir(chaine):
         try:
             os.chdir(chaine)
@@ -46,7 +56,7 @@ def cd_racine():  #déplace l'espace de travail vers le chemin parent
 def ls():  #liste de dossiers et de fichiers dans le répertoire actuelle
     list_name = []
     list_name = os.listdir(os.getcwd())
-    [print(x) for x in list_name if os.path.isdir(list_name[list_name.index(x)]) and not '__pycache__']
+    [print(x) for x in list_name if os.path.isdir(list_name[list_name.index(x)])]
     [print(x) for x in list_name if os.path.isfile(list_name[list_name.index(x)])]
 
 def ls_l():  ##liste de dossiers et de fichiers dans le répertoire actuelle avec la taille en octets
@@ -73,30 +83,31 @@ def ls_lh():  ##liste de dossiers et de fichiers dans le répertoire actuelle av
                 print(list_name[i] + ' ' + str(round(os.path.getsize(list_name[i]) / 1000000000)) + 'GB')
   
 def mkdir(chaine):  #crée un nouveau répertoire
-    chaine = chaine.replace('mkdir ', '')
-    chaine_bis = ''
-    chaine_prime = ''
+    chaine = chaine.replace('mkdir', '').strip(' ')
+    list_chaine = ''
+    x = ''
     if chaine != '':
-        for i in reversed(range(len(chaine))):
-            if '\\' != chaine[i]:
-                chaine_bis = chaine_bis + chaine[i]
+        list_chaine = os.path.split(chaine)
+        result = id_path(chaine)
+        path_parent = os.path.normpath(result[0])
+        if result[2] == 3:
+            x = result[1]
+        if os.path.exists(result[0]):
+            os.chdir(result[0])
+            if list_chaine[-1] not in os.listdir(os.getcwd()):
+                os.mkdir(result[1])
             else:
-                break
-        for i in reversed(range(len(chaine_bis))):
-            chaine_prime = chaine_prime + chaine_bis[i]
-        chaine = chaine.rstrip(chaine_prime)
-        os.chdir(chaine)
-        path_parent = os.path.dirname(os.getcwd())
-        os.chdir(path_parent)
-        if not os.path.exists(chaine + chaine_prime): 
-            os.mkdir(chaine + chaine_prime)
-        else:
-            print('The directory already exists')
+                print('The directory already exists')
+        elif x != '':
+            if list_chaine[-1] not in os.listdir(os.getcwd()):
+                os.mkdir(result[1])
+            else:
+                print('The directory already exists')
     else:
         print('Specify the name of the directory to be made')
 
 def rm(chaine):  #supprime un fichier ou un répertoire spécifié
-    chaine = chaine.replace('rm ', '')
+    chaine = chaine.replace('rm', '').strip(' ')
     result = ''
     if chaine == '':
         print('Specify the file or directory')
@@ -140,42 +151,26 @@ def rm(chaine):  #supprime un fichier ou un répertoire spécifié
                 print('No such file or directory')
 
 def mv(chaine):  #renomme n'importe quel fichier ou répertoire
-    chaine = chaine.replace('mv ', '')
-    chaine_prime = chaine.split(' ')
-    new_chaine = ''
-    new_chaine_bis = ''
-    x = 0
-    if chaine_prime != '':
-        for i in range(len(chaine_prime)):
-            if os.path.exists(new_chaine) == False:
-                new_chaine = new_chaine + chaine_prime[i] + ' '
-            else:
-                x = i
-                break
-        for i in range(x, len(chaine_prime)):
-            if os.path.exists(new_chaine_bis) == False:
-                new_chaine_bis = new_chaine_bis + chaine_prime[i] + ' '
-        new_chaine = new_chaine.strip(' ')
-        new_chaine_bis = new_chaine_bis.strip(' ')
-        if new_chaine_bis != '':
-            result_1 = id_path(new_chaine)
-            try:
-                os.chdir(result_1[0])
-            except FileNotFoundError:
-                print('No such file or directory')
-            result_2 = id_path(new_chaine_bis)
-            if result_1[1] in os.listdir(os.getcwd()):
-                if result_1[1] != result_2[1]:
-                    os.rename(result_1[1], result_2[1])
-                else:
-                    print('The file or directory already exists')
-            else:
-                print('Specify the current name of the file or directory and the new name')
-        else:
+    chaine = chaine.replace('mv', '').strip(' ')
+    chaine_arg1_arg2 = chaine_cond(chaine)
+    token_error = False
+    chaine = chaine.split(' ')
+    
+    if chaine_arg1_arg2[0] != False:
+        try:
+            chaine_arg1_arg2[1]  #le positionnement de l'index indique le nombre d'argument à vérifier
+        except IndexError:
+            token_error = True
             print('Specify the current name of the file or directory and the new name')
     else:
-            print('Specify the current name of the file or directory and the new name')
-
-
-
+        token_error = True
+        print('Specify the current name of the file or directory and the new name')
+    if token_error != True:
+        if os.path.isdir(chaine[0]) or os.path.isfile(chaine[0]):
+            if chaine[1] not in os.listdir(os.getcwd()):
+                os.rename(chaine[0], chaine[1])
+            else:
+                print('The file or directory already exists')
+        else:
+            print('No such file or directory')
 
