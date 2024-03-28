@@ -1,9 +1,9 @@
 import os
 
-from module.fonctions import pwd, cd, cd_racine, quite, ls, ls_l, ls_lh, rm, mv, mkdir
+from module.fonctions import pwd, cd, cd_racine, quite, ls, ls_l, ls_lh, rm, mv, mkdir, cp
 
 print('Input the command')
-list_command = ('pwd', 'cd..', 'cd', 'quite', 'ls', 'ls -l', 'ls -lh', 'rm', 'mv', 'mkdir')
+list_command = ('pwd', 'cd..', 'cd', 'quite', 'ls', 'ls -l', 'ls -lh', 'rm', 'mv', 'mkdir', 'cp')
 while True:
     chaine = input()
     while True:
@@ -37,6 +37,8 @@ while True:
         mv(chaine)
     elif chaine.startswith('mkdir'):
         mkdir(chaine)
+    elif chaine.startswith('cp'):
+        cp(chaine)
 
 
     

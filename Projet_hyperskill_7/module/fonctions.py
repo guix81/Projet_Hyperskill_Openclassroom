@@ -1,6 +1,7 @@
 import os
 import shutil
 
+
 def chaine_cond(chaine):  #vérifie l'existance du nombre d'arguments aprés la commande (ex: mv arg1 arg2)
     chaine_prime = chaine.split(' ')
     list_bool = []
@@ -16,14 +17,15 @@ def id_path(chaine):  #identification du type de chemin (absolu, relatif)
     list_chaine = []
     dirfile_cible = ''
     path_parent = ''
-    if chaine.startswith('C:\\'):
+    if chaine.startswith('C:\\') or chaine.startswith('\\Home\\'):
         id = 1
     elif chaine.startswith('.\\') or ('\\') in chaine:
         id = 2
-    elif not chaine.startswith('.\\') and not chaine.startswith('C:\\'):
+    else:
         id = 3
     if id == 1 or id == 2:
-        list_chaine = chaine.split('\\')
+        list_chaine = os.path.split(chaine)
+        #list_chaine = chaine.split('\\')
         dirfile_cible = list_chaine[-1]
         for i in range(len(list_chaine)):
             if list_chaine[i] != list_chaine[-1]:
@@ -152,19 +154,19 @@ def rm(chaine):  #supprime un fichier ou un répertoire spécifié
 
 def mv(chaine):  #renomme n'importe quel fichier ou répertoire
     chaine = chaine.replace('mv', '').strip(' ')
-    chaine_arg1_arg2 = chaine_cond(chaine)
+    chaine_args = chaine_cond(chaine)
     token_error = False
     chaine = chaine.split(' ')
     
-    if chaine_arg1_arg2[0] != False:
+    if chaine_args[0] != False:
         try:
-            chaine_arg1_arg2[1]  #le positionnement de l'index indique le nombre d'argument à vérifier
+            chaine_args[1]  #le positionnement de l'index indique le nombre d'argument à vérifier
         except IndexError:
             token_error = True
-            print('Specify the current name of the file or directory and the new name')
+            print('Specify the current name of the file or directory and the new location and/or name')
     else:
         token_error = True
-        print('Specify the current name of the file or directory and the new name')
+        print('Specify the current name of the file or directory and the new location and/or name')
     if token_error != True:
         if os.path.isdir(chaine[0]) or os.path.isfile(chaine[0]):
             if chaine[1] not in os.listdir(os.getcwd()):
@@ -174,3 +176,80 @@ def mv(chaine):  #renomme n'importe quel fichier ou répertoire
         else:
             print('No such file or directory')
 
+def cp(chaine):  #copie un fichier et enregistre cette copie dans un nouveau répertoire 
+    chaine = chaine.replace('cp', '').strip(' ')
+    chaine_args = chaine_cond(chaine)
+    token_error = False
+    token_exist_arg1 = False
+    token_exist_arg2 = False
+    chaine = chaine.split(' ')
+    nb_args = 1  # index 0 + 1 = 2 args
+    if chaine_args[0] != False:
+        try:
+            chaine_args[nb_args]  #le positionnement de l'index indique le nombre d'argument à vérifier
+            try:
+                chaine_args[nb_args + 1]  #n'accepte pas de troisième argument
+                token_error = True
+                print('Specify the current name of the file or directory and the new location and/or name1')
+            except IndexError:
+                token_error = False
+        except IndexError:
+            token_error = True
+            print('Specify the current name of the file or directory and the new location and/or name2')
+    else:
+        token_error = True
+        print('Specify the file')
+    if token_error != True:
+        result_1 = id_path(chaine[0])
+        result_2 = id_path(chaine[1])
+        if result_1[2] == 1:
+            if os.path.exists(chaine[0]):
+                if os.path.isfile(chaine[0]):
+                    token_exist_arg1 = True
+                else:
+                    print('No such file or directory')
+            else:
+                print('No such file or directory')
+        elif result_1[2] == 2 or result_1[2] == 3:
+            if result_1[1] in os.listdir('.'):
+                if os.path.exists(result_1[1]):
+                    if os.path.isfile(result_1[1]):
+                        token_exist_arg1 = True
+                    else:
+                        print('No such file or directory')
+                else:
+                    print('No such file or directory')
+        if token_exist_arg1:
+            if result_2[2] == 1:
+                if os.path.exists(chaine[1]):
+                    if os.path.isdir(chaine[1]):
+                        token_exist_arg2 = True
+                    else:
+                        print('No such file or directory')
+                else:
+                    print('No such file or directory')
+            elif result_2[2] == 2 or result_2[2] == 3:
+                if result_2[1] in os.listdir('.'):
+                    if os.path.exists(result_2[1]):
+                        if os.path.isdir(result_2[1]):
+                            token_exist_arg2 = True
+                        else:
+                            print('No such file or directory')
+                    else:
+                        print('No such file or directory')
+                else:
+                    print('No such file or directory')
+        if token_exist_arg2:
+            os.chdir(result_2[1])
+            if result_1[1] in os.listdir('.'):
+                print(f'{result_1[1]} already exists in this directory')
+            else:
+                os.chdir(os.path.dirname(os.getcwd()))
+                shutil.copy(result_1[1], result_2[1])
+        
+
+
+
+        
+cd('cd Projet_hyperskill_7')
+cp('cp Projet_hyperskill_7\\jojo.txt Projet_hyperskill_7\\dodouiuiui')
