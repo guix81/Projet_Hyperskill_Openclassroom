@@ -24,12 +24,13 @@ def id_path(chaine):  #identification du type de chemin (absolu, relatif)
     else:
         id = 3
     if id == 1 or id == 2:
-        list_chaine = os.path.split(chaine)
-        #list_chaine = chaine.split('\\')
+        list_chaine = chaine.split('\\')
         dirfile_cible = list_chaine[-1]
         for i in range(len(list_chaine)):
             if list_chaine[i] != list_chaine[-1]:
                 path_parent = path_parent + list_chaine[i] + '\\'
+            else:
+                path_parent = path_parent.strip('\\')
     elif id == 3:
         dirfile_cible = chaine
     return path_parent, dirfile_cible, id  #retourne respectivement le chemin parent, le dossier/fichier cible et le type de chemin
@@ -156,6 +157,7 @@ def mv(chaine):  #renomme n'importe quel fichier ou répertoire
     chaine = chaine.replace('mv', '').strip(' ')
     chaine_args = chaine_cond(chaine)
     token_error = False
+    bool_isdir_file = []
     chaine = chaine.split(' ')
     
     if chaine_args[0] != False:
@@ -168,16 +170,130 @@ def mv(chaine):  #renomme n'importe quel fichier ou répertoire
         token_error = True
         print('Specify the current name of the file or directory and the new location and/or name')
     if token_error != True:
-        if os.path.isdir(chaine[0]) or os.path.isfile(chaine[0]):
-            if chaine[1] not in os.listdir(os.getcwd()):
-                os.rename(chaine[0], chaine[1])
+        result_1 = id_path(chaine[0])
+        result_2 = id_path(chaine[1])
+        if result_1[2] == 1 or result_1[2] == 2:
+            if os.path.isfile(chaine[0]):
+                bool_isdir_file.append('isFile')
+            elif os.path.isdir(chaine[0]):
+                bool_isdir_file.append('isDir')
+            elif not os.path.exists(chaine[0]):
+                bool_isdir_file.append('noExist')
+        elif result_1[2] == 3:
+            if os.path.isfile(result_1[1]):
+                bool_isdir_file.append('isFile')
+            elif os.path.isdir(result_1[1]):
+                bool_isdir_file.append('isDir')
+            elif not os.path.exists(result_1[1]):
+                bool_isdir_file.append('noExist')
+        
+        if result_2[2] == 1 or result_2[2] == 2:
+            if os.path.isfile(chaine[1]):
+                bool_isdir_file.append('isFile')
+            elif os.path.isdir(chaine[1]):
+                bool_isdir_file.append('isDir')
+            elif not os.path.exists(chaine[1]):
+                bool_isdir_file.append('noExist')
+        elif result_2[2] == 3:
+            if os.path.isfile(result_2[1]):
+                bool_isdir_file.append('isFile')
+            elif os.path.isdir(result_2[1]):
+                bool_isdir_file.append('isDir')
+            elif not os.path.exists(result_2[1]):
+                bool_isdir_file.append('noExist')
+
+        if bool_isdir_file[0] == 'noExist':
+            print('No such file or directory')
+        
+        if bool_isdir_file[0] == 'isFile' and bool_isdir_file[1] == 'isDir':
+            if result_1[1] not in os.listdir(chaine[1]):
+                shutil.move(chaine[0], chaine[1])
             else:
                 print('The file or directory already exists')
-        else:
-            print('No such file or directory')
+        elif bool_isdir_file[0] == 'isFile' and not bool_isdir_file[1] == 'noExist' and result_2[2] == 3:
+            if result_2[1] not in os.listdir('.'):
+                os.rename(chaine[0], result_2[1])
+            else:
+                print('The file or directory already exists')
+        elif bool_isdir_file[0] == 'isFile' and bool_isdir_file[1] == 'noExist':
+            if result_2[1] not in os.listdir('.'):
+                shutil.move(chaine[0], chaine[1])
+            else:
+                print('The file or directory already exists')
 
 def cp(chaine):  #copie un fichier et enregistre cette copie dans un nouveau répertoire 
     chaine = chaine.replace('cp', '').strip(' ')
+    chaine_args = chaine_cond(chaine)
+    nb_args = 1  # index 0 + 1 = 2 args
+    token_error = False
+    bool_isdir_file = []
+    chaine = chaine.split(' ')
+    
+    if chaine_args[0] != False:
+        try:
+            chaine_args[nb_args]  #le positionnement de l'index indique le nombre d'argument à vérifier
+            try:
+                chaine_args[nb_args + 1]  #n'accepte pas de troisième argument
+                token_error = True
+                print('Specify the current name of the file or directory and the new location and/or name')
+            except IndexError:
+                token_error = False
+        except IndexError:
+            token_error = True
+            print('Specify the current name of the file or directory and the new location and/or name')
+    else:
+        token_error = True
+        print('Specify the file')
+
+    if token_error != True:
+        result_1 = id_path(chaine[0])
+        result_2 = id_path(chaine[1])
+        if result_1[2] == 1 or result_1[2] == 2:
+            if os.path.isfile(chaine[0]):
+                bool_isdir_file.append('isFile')
+            elif os.path.isdir(chaine[0]):
+                bool_isdir_file.append('isDir')
+            elif not os.path.exists(chaine[0]):
+                bool_isdir_file.append('noExist')
+        elif result_1[2] == 3:
+            if os.path.isfile(result_1[1]):
+                bool_isdir_file.append('isFile')
+            elif os.path.isdir(result_1[1]):
+                bool_isdir_file.append('isDir')
+            elif not os.path.exists(result_1[1]):
+                bool_isdir_file.append('noExist')
+        
+        if result_2[2] == 1 or result_2[2] == 2:
+            if os.path.isfile(chaine[1]):
+                bool_isdir_file.append('isFile')
+            elif os.path.isdir(chaine[1]):
+                bool_isdir_file.append('isDir')
+            elif not os.path.exists(chaine[1]):
+                bool_isdir_file.append('noExist')
+        elif result_2[2] == 3:
+            if os.path.isfile(result_2[1]):
+                bool_isdir_file.append('isFile')
+            elif os.path.isdir(result_2[1]):
+                bool_isdir_file.append('isDir')
+            elif not os.path.exists(result_2[1]):
+                bool_isdir_file.append('noExist')
+            elif result_2[1] == '..':
+                bool_isdir_file.append('..')  #cd racine
+
+        if bool_isdir_file[0] == 'noExist' or bool_isdir_file[1] == 'noExist':
+            print('No such file or directory')
+        if bool_isdir_file[0] == 'isFile' and bool_isdir_file[1] == 'isDir':
+            if result_1[1] not in os.listdir(chaine[1]):
+                shutil.copy(chaine[0], chaine[1])
+            else:
+                print(f'{result_1[1]} already exists in this directory')
+        if bool_isdir_file[0] == 'isFile' and bool_isdir_file[1] == '..':
+            if result_1[1] not in os.listdir(os.path.dirname(chaine[1])):
+                shutil.copy(chaine[0], result_2[0])
+            else:
+                print(f'{result_1[1]} already exists in this directory')
+
+    '''
     chaine_args = chaine_cond(chaine)
     token_error = False
     token_exist_arg1 = False
@@ -190,12 +306,12 @@ def cp(chaine):  #copie un fichier et enregistre cette copie dans un nouveau ré
             try:
                 chaine_args[nb_args + 1]  #n'accepte pas de troisième argument
                 token_error = True
-                print('Specify the current name of the file or directory and the new location and/or name1')
+                print('Specify the current name of the file or directory and the new location and/or name')
             except IndexError:
                 token_error = False
         except IndexError:
             token_error = True
-            print('Specify the current name of the file or directory and the new location and/or name2')
+            print('Specify the current name of the file or directory and the new location and/or name')
     else:
         token_error = True
         print('Specify the file')
@@ -246,10 +362,12 @@ def cp(chaine):  #copie un fichier et enregistre cette copie dans un nouveau ré
             else:
                 os.chdir(os.path.dirname(os.getcwd()))
                 shutil.copy(result_1[1], result_2[1])
+                '''
         
 
 
 
         
 cd('cd Projet_hyperskill_7')
-cp('cp Projet_hyperskill_7\\jojo.txt Projet_hyperskill_7\\dodouiuiui')
+#ls()
+cp('cp jojo.txt ..')
