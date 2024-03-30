@@ -1,0 +1,1 @@
+Apprenez à gérer les entrées et les sorties, à utiliser le générateur de nombres aléatoires et à écrire la sortie dans un fichier.
