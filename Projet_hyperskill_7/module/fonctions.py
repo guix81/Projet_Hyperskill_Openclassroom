@@ -35,8 +35,8 @@ def id_path(chaine):  #identification du type de chemin (absolu, relatif)
         dirfile_cible = chaine
     return path_parent, dirfile_cible, id  #retourne respectivement le chemin parent, le dossier/fichier cible et le type de chemin
 
-def pwd():
-    print(os.getcwd())  #affiche le chemin de l'espace de travail
+def pwd():  ##affiche le chemin de l'espace de travail
+    print(os.getcwd())
 
 def cd(chaine):  #déplace l'espace de travail vers le chemin spécifié
     chaine = chaine.replace('cd', '').strip(' ')
@@ -113,6 +113,8 @@ def rm(chaine):  #supprime un fichier ou un répertoire spécifié
     chaine = chaine.replace('rm', '').strip(' ')
     chaine_args = chaine_cond(chaine)
     token_error = False
+    list_extension = ['.txt']
+    error_extention = False
     bool_isdir_file = []
     chaine = chaine.split(' ')
     
@@ -142,6 +144,9 @@ def rm(chaine):  #supprime un fichier ou un répertoire spécifié
             elif not os.path.exists(result_1[1]):
                 bool_isdir_file.append('noExist')
 
+        if result_1[1] not in list_extension:
+            error_extention = True
+
         if bool_isdir_file[0] == 'isDir':
             if result_1[2] == 1 or result_1[2] == 2:
                 shutil.rmtree(chaine[0])
@@ -152,12 +157,12 @@ def rm(chaine):  #supprime un fichier ou un répertoire spécifié
                 os.remove(chaine[0])
             else:
                 os.remove(result_1[1])
-        elif bool_isdir_file[0] == 'noExist' and result_1[1].startswith('.'):
+        elif bool_isdir_file[0] == 'noExist' and result_1[1] in list_extension:
             for i in os.listdir('.'):
                 if i.endswith(result_1[1]):
                     os.remove(i)
-                else:
-                    print(f'File extension {result_1[1]} not found in this directory')
+        elif error_extention == True:
+            print(f'File extension {result_1[1]} not found in this directory')
         else:
             print('No such file or directory')
 
@@ -245,31 +250,32 @@ def mv(chaine):  #renomme n'importe quel fichier ou répertoire
         elif bool_isdir_file[0] == 'noExist' and error_extention != True and bool_isdir_file[1] == 'isDir':
             for i in os.listdir('.'):
                 if result_2[2] == 1 or result_2[2] == 2:
-                    if i not in os.listdir(chaine[1]):
-                        if i.endswith(result_1[1]):
+                    if i.endswith(chaine[1]):
+                        if i not in os.listdir(chaine[1]):
                             shutil.move(i, chaine[1])
-                    else:
-                        while True:
-                            r = input(f'{i} already exists in this directory. Replace? (y/n)')
-                            if r == 'y':
-                                os.remove(chaine[1] + '\\' + i)
-                                shutil.move(i, chaine[1])
-                                break
-                            elif r == 'n':
-                                break
+                        else:
+                            while True:
+                                r = input(f'{i} already exists in this directory. Replace? (y/n)')
+                                if r == 'y':
+                                    os.remove(chaine[1] + '\\' + i)
+                                    shutil.move(i, chaine[1])
+                                    break
+                                elif r == 'n':
+                                    break
                 else:
-                    if i not in os.listdir(result_2[1]):
-                        if i.endswith(result_1[1]):
+                    if i.endswith(result_1[1]):
+                        if i not in os.listdir(result_2[1]):
                             shutil.move(i, result_2[1])
-                    else:
-                        while True:
-                            r = input(f'{i} already exists in this directory. Replace? (y/n)')
-                            if r == 'y':
-                                os.remove(result_2[1] + '\\' + i)
-                                shutil.move(i, result_2[1])
-                                break
-                            elif r == 'n':
-                                break
+                        else:
+                            while True:
+                                r = input(f'{i} already exists in this directory. Replace? (y/n)')
+                                if r == 'y':
+                                    path_abs = os.path.abspath(result_2[1] + '/' + i)
+                                    os.remove(path_abs)
+                                    shutil.move(i, result_2[1])
+                                    break
+                                elif r == 'n':
+                                    break
         elif error_extention == True:
             print(f'File extension {result_1[1]} not found in this directory')
 
@@ -359,53 +365,48 @@ def cp(chaine):  #copie un fichier et enregistre cette copie dans un nouveau ré
         elif bool_isdir_file[0] == 'noExist' and error_extention != True and bool_isdir_file[1] == 'isDir':
             for i in os.listdir('.'):
                 if result_2[2] == 1 or result_2[2] == 2:
-                    if i not in os.listdir(chaine[1]):
-                        if i.endswith(result_1[1]):
+                    if i.endswith(chaine[0]):
+                        if i not in os.listdir(chaine[1]):
                             shutil.copy(i, chaine[1])
-                    else:
-                        while True:
-                            r = input(f'{i} already exists in this directory. Replace? (y/n)')
-                            if r == 'y':
-                                os.remove(chaine[1] + '\\' + i)
-                                shutil.copy(i, chaine[1])
-                                break
-                            elif r == 'n':
-                                break
+                        else:
+                            while True:
+                                r = input(f'{i} already exists in this directory. Replace? (y/n)')
+                                if r == 'y':
+                                    os.remove(chaine[1] + '\\' + i)
+                                    shutil.copy(i, chaine[1])
+                                    break
+                                elif r == 'n':
+                                    break
                 else:
-                    if i not in os.listdir(result_2[1]):
-                        if i.endswith(result_1[1]):
+                    if i.endswith(result_1[1]):
+                        if i not in os.listdir(result_2[1]):
                             shutil.copy(i, result_2[1])
-                    else:
-                        while True:
-                            r = input(f'{i} already exists in this directory. Replace? (y/n)')
-                            if r == 'y':
-                                os.remove(result_2[1] + '\\' + i)
-                                shutil.copy(i, result_2[1])
-                                break
-                            elif r == 'n':
-                                break
+                        else:
+                            while True:
+                                r = input(f'{i} already exists in this directory. Replace? (y/n)')
+                                if r == 'y':
+                                    t = os.path.abspath(result_2[1] + '/' + i)
+                                    os.remove(t)
+                                    shutil.copy(i, result_2[1])
+                                    break
+                                elif r == 'n':
+                                    break
         elif bool_isdir_file[0] == 'noExist' and error_extention != True and result_2[1] == '..':
             x = os.path.dirname(os.getcwd())
             for i in os.listdir('.'):
-                if i not in os.listdir(x):
-                    if i.endswith(result_1[1]):
+                if i.endswith(result_1[1]):
+                    if i not in os.listdir(x):
                         shutil.copy(i, x)
-                else:
-                    while True:
-                        r = input(f'{i} already exists in this directory. Replace? (y/n)')
-                        if r == 'y':
-                            os.remove(x + '\\' + i)
-                            shutil.copy(i, x)
-                            break
-                        elif r == 'n':
-                            break
+                    else:
+                        while True:
+                            r = input(f'{i} already exists in this directory. Replace? (y/n)')
+                            if r == 'y':
+                                os.remove(x + '\\' + i)
+                                shutil.copy(i, x)
+                                break
+                            elif r == 'n':
+                                break
         elif error_extention == True:
             print(f'File extension {result_1[1]} not found in this directory')
                 
 
-        
-
-cd('cd Projet_hyperskill_7')
-#rm('rm Projet_hyperskill_7\\juju.txt')
-#cp('cp .txt root')
-mv('mv .txt root')
