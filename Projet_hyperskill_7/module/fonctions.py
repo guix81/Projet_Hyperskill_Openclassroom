@@ -111,52 +111,62 @@ def mkdir(chaine):  #crée un nouveau répertoire
 
 def rm(chaine):  #supprime un fichier ou un répertoire spécifié
     chaine = chaine.replace('rm', '').strip(' ')
-    result = ''
-    if chaine == '':
-        print('Specify the file or directory')
+    chaine_args = chaine_cond(chaine)
+    token_error = False
+    bool_isdir_file = []
+    chaine = chaine.split(' ')
+    
+    if chaine_args[0] != False:
+        try:
+            chaine_args[0]  #le positionnement de l'index indique le nombre minimum d'argument à vérifier
+        except IndexError:
+            token_error = True
+            print('Specify the current name of the file or directory and the new location and/or name')
     else:
-        result = id_path(chaine)
-        if result[-1] == 1:
-            if os.path.isdir(chaine):
-                try:
-                    shutil.rmtree(chaine)
-                except OSError:
-                    print('No such file or directory')
-            elif os.path.isfile(chaine):
-                try:
-                    os.remove(chaine)
-                except FileNotFoundError:
-                    print('No such file or directory')
-        elif result[-1] == 2:
-            os.chdir(result[0])
-            if os.path.isdir(os.getcwd() + '\\' + result[1]):
-                try:
-                    shutil.rmtree(result[1])
-                except OSError:
-                    print('No such file or directory')
-            elif os.path.isfile(os.getcwd() + '\\' + result[1]):
-                try:
-                    os.remove(result[1])
-                except FileNotFoundError:
-                    print('No such file or directory')
-        elif result[-1] == 3:
-            if os.path.isdir(os.getcwd() + '\\' + result[1]):
-                try:
-                    shutil.rmtree(result[1])
-                except OSError:
-                    print('No such file or directory')
-            elif os.path.isfile(os.getcwd() + '\\' + result[1]):
-                try:
-                    os.remove(result[1])
-                except FileNotFoundError:
-                    print('No such file or directory')
+        token_error = True
+        print('Specify the file or directory')
+    if token_error != True:
+        result_1 = id_path(chaine[0])
+        if result_1[2] == 1 or result_1[2] == 2:
+            if os.path.isfile(chaine[0]):
+                bool_isdir_file.append('isFile')
+            elif os.path.isdir(chaine[0]):
+                bool_isdir_file.append('isDir')
+            elif not os.path.exists(chaine[0]):
+                bool_isdir_file.append('noExist')
+        elif result_1[2] == 3:
+            if os.path.isfile(result_1[1]):
+                bool_isdir_file.append('isFile')
+            elif os.path.isdir(result_1[1]):
+                bool_isdir_file.append('isDir')
+            elif not os.path.exists(result_1[1]):
+                bool_isdir_file.append('noExist')
+
+        if bool_isdir_file[0] == 'isDir':
+            if result_1[2] == 1 or result_1[2] == 2:
+                shutil.rmtree(chaine[0])
             else:
-                print('No such file or directory')
+                shutil.rmtree(result_1[1])
+        elif bool_isdir_file[0] == 'isFile':
+            if result_1[2] == 1 or result_1[2] == 2:
+                os.remove(chaine[0])
+            else:
+                os.remove(result_1[1])
+        elif bool_isdir_file[0] == 'noExist' and result_1[1].startswith('.'):
+            for i in os.listdir('.'):
+                if i.endswith(result_1[1]):
+                    os.remove(i)
+                else:
+                    print(f'File extension {result_1[1]} not found in this directory')
+        else:
+            print('No such file or directory')
 
 def mv(chaine):  #renomme n'importe quel fichier ou répertoire
     chaine = chaine.replace('mv', '').strip(' ')
     chaine_args = chaine_cond(chaine)
     token_error = False
+    list_extension = ['.txt']
+    error_extention = False
     bool_isdir_file = []
     chaine = chaine.split(' ')
     
@@ -202,24 +212,66 @@ def mv(chaine):  #renomme n'importe quel fichier ou répertoire
             elif not os.path.exists(result_2[1]):
                 bool_isdir_file.append('noExist')
 
-        if bool_isdir_file[0] == 'noExist':
+        if result_1[1] not in list_extension:
+            error_extention = True
+
+        if chaine_args[0] == False or bool_isdir_file[1] == 'noExist':
             print('No such file or directory')
         
         if bool_isdir_file[0] == 'isFile' and bool_isdir_file[1] == 'isDir':
             if result_1[1] not in os.listdir(chaine[1]):
-                shutil.move(chaine[0], chaine[1])
+                if result_1[2] == 1 or result_1[2] == 2:
+                    shutil.move(chaine[0], chaine[1])
+                else:
+                    shutil.move(result_1[1], chaine[1])
             else:
                 print('The file or directory already exists')
         elif bool_isdir_file[0] == 'isFile' and not bool_isdir_file[1] == 'noExist' and result_2[2] == 3:
             if result_2[1] not in os.listdir('.'):
-                os.rename(chaine[0], result_2[1])
+                if result_1[2] == 1 or result_1[2] == 2:
+                    os.rename(chaine[0], result_2[1])
+                else:
+                    os.rename(result_1[1], result_2[1])
             else:
                 print('The file or directory already exists')
         elif bool_isdir_file[0] == 'isFile' and bool_isdir_file[1] == 'noExist':
             if result_2[1] not in os.listdir('.'):
-                shutil.move(chaine[0], chaine[1])
+                if result_1[2] == 1 or result_1[2] == 2:
+                    shutil.move(chaine[0], chaine[1])
+                else:
+                    shutil.move(result_1[1], chaine[1])
             else:
                 print('The file or directory already exists')
+        elif bool_isdir_file[0] == 'noExist' and error_extention != True and bool_isdir_file[1] == 'isDir':
+            for i in os.listdir('.'):
+                if result_2[2] == 1 or result_2[2] == 2:
+                    if i not in os.listdir(chaine[1]):
+                        if i.endswith(result_1[1]):
+                            shutil.move(i, chaine[1])
+                    else:
+                        while True:
+                            r = input(f'{i} already exists in this directory. Replace? (y/n)')
+                            if r == 'y':
+                                os.remove(chaine[1] + '\\' + i)
+                                shutil.move(i, chaine[1])
+                                break
+                            elif r == 'n':
+                                break
+                else:
+                    if i not in os.listdir(result_2[1]):
+                        if i.endswith(result_1[1]):
+                            shutil.move(i, result_2[1])
+                    else:
+                        while True:
+                            r = input(f'{i} already exists in this directory. Replace? (y/n)')
+                            if r == 'y':
+                                os.remove(result_2[1] + '\\' + i)
+                                shutil.move(i, result_2[1])
+                                break
+                            elif r == 'n':
+                                break
+        elif error_extention == True:
+            print(f'File extension {result_1[1]} not found in this directory')
 
 def cp(chaine):  #copie un fichier et enregistre cette copie dans un nouveau répertoire 
     chaine = chaine.replace('cp', '').strip(' ')
@@ -227,6 +279,8 @@ def cp(chaine):  #copie un fichier et enregistre cette copie dans un nouveau ré
     nb_args = 1  # index 0 + 1 = 2 args
     token_error = False
     bool_isdir_file = []
+    list_extension = ['.txt']
+    error_extention = False
     chaine = chaine.split(' ')
     
     if chaine_args[0] != False:
@@ -280,94 +334,78 @@ def cp(chaine):  #copie un fichier et enregistre cette copie dans un nouveau ré
             elif result_2[1] == '..':
                 bool_isdir_file.append('..')  #cd racine
 
-        if bool_isdir_file[0] == 'noExist' or bool_isdir_file[1] == 'noExist':
+        if result_1[1] not in list_extension:
+            error_extention = True
+
+        if chaine_args[0] == False or bool_isdir_file[1] == 'noExist':
             print('No such file or directory')
-        if bool_isdir_file[0] == 'isFile' and bool_isdir_file[1] == 'isDir':
+
+        elif bool_isdir_file[0] == 'isFile' and bool_isdir_file[1] == 'isDir':
             if result_1[1] not in os.listdir(chaine[1]):
-                shutil.copy(chaine[0], chaine[1])
+                if result_1[2] == 1 or result_1[2] == 2:
+                    shutil.copy(chaine[0], chaine[1])
+                else:
+                    shutil.copy(result_1[1], chaine[1])
             else:
                 print(f'{result_1[1]} already exists in this directory')
-        if bool_isdir_file[0] == 'isFile' and bool_isdir_file[1] == '..':
+        elif bool_isdir_file[0] == 'isFile' and bool_isdir_file[1] == '..':
             if result_1[1] not in os.listdir(os.path.dirname(chaine[1])):
-                shutil.copy(chaine[0], result_2[0])
+                if result_1[2] == 1 or result_1[2] == 2:
+                    shutil.copy(chaine[0], result_2[0])
+                else:
+                    shutil.copy(result_1[1], result_2[0])
             else:
                 print(f'{result_1[1]} already exists in this directory')
+        elif bool_isdir_file[0] == 'noExist' and error_extention != True and bool_isdir_file[1] == 'isDir':
+            for i in os.listdir('.'):
+                if result_2[2] == 1 or result_2[2] == 2:
+                    if i not in os.listdir(chaine[1]):
+                        if i.endswith(result_1[1]):
+                            shutil.copy(i, chaine[1])
+                    else:
+                        while True:
+                            r = input(f'{i} already exists in this directory. Replace? (y/n)')
+                            if r == 'y':
+                                os.remove(chaine[1] + '\\' + i)
+                                shutil.copy(i, chaine[1])
+                                break
+                            elif r == 'n':
+                                break
+                else:
+                    if i not in os.listdir(result_2[1]):
+                        if i.endswith(result_1[1]):
+                            shutil.copy(i, result_2[1])
+                    else:
+                        while True:
+                            r = input(f'{i} already exists in this directory. Replace? (y/n)')
+                            if r == 'y':
+                                os.remove(result_2[1] + '\\' + i)
+                                shutil.copy(i, result_2[1])
+                                break
+                            elif r == 'n':
+                                break
+        elif bool_isdir_file[0] == 'noExist' and error_extention != True and result_2[1] == '..':
+            x = os.path.dirname(os.getcwd())
+            for i in os.listdir('.'):
+                if i not in os.listdir(x):
+                    if i.endswith(result_1[1]):
+                        shutil.copy(i, x)
+                else:
+                    while True:
+                        r = input(f'{i} already exists in this directory. Replace? (y/n)')
+                        if r == 'y':
+                            os.remove(x + '\\' + i)
+                            shutil.copy(i, x)
+                            break
+                        elif r == 'n':
+                            break
+        elif error_extention == True:
+            print(f'File extension {result_1[1]} not found in this directory')
+                
 
-    '''
-    chaine_args = chaine_cond(chaine)
-    token_error = False
-    token_exist_arg1 = False
-    token_exist_arg2 = False
-    chaine = chaine.split(' ')
-    nb_args = 1  # index 0 + 1 = 2 args
-    if chaine_args[0] != False:
-        try:
-            chaine_args[nb_args]  #le positionnement de l'index indique le nombre d'argument à vérifier
-            try:
-                chaine_args[nb_args + 1]  #n'accepte pas de troisième argument
-                token_error = True
-                print('Specify the current name of the file or directory and the new location and/or name')
-            except IndexError:
-                token_error = False
-        except IndexError:
-            token_error = True
-            print('Specify the current name of the file or directory and the new location and/or name')
-    else:
-        token_error = True
-        print('Specify the file')
-    if token_error != True:
-        result_1 = id_path(chaine[0])
-        result_2 = id_path(chaine[1])
-        if result_1[2] == 1:
-            if os.path.exists(chaine[0]):
-                if os.path.isfile(chaine[0]):
-                    token_exist_arg1 = True
-                else:
-                    print('No such file or directory')
-            else:
-                print('No such file or directory')
-        elif result_1[2] == 2 or result_1[2] == 3:
-            if result_1[1] in os.listdir('.'):
-                if os.path.exists(result_1[1]):
-                    if os.path.isfile(result_1[1]):
-                        token_exist_arg1 = True
-                    else:
-                        print('No such file or directory')
-                else:
-                    print('No such file or directory')
-        if token_exist_arg1:
-            if result_2[2] == 1:
-                if os.path.exists(chaine[1]):
-                    if os.path.isdir(chaine[1]):
-                        token_exist_arg2 = True
-                    else:
-                        print('No such file or directory')
-                else:
-                    print('No such file or directory')
-            elif result_2[2] == 2 or result_2[2] == 3:
-                if result_2[1] in os.listdir('.'):
-                    if os.path.exists(result_2[1]):
-                        if os.path.isdir(result_2[1]):
-                            token_exist_arg2 = True
-                        else:
-                            print('No such file or directory')
-                    else:
-                        print('No such file or directory')
-                else:
-                    print('No such file or directory')
-        if token_exist_arg2:
-            os.chdir(result_2[1])
-            if result_1[1] in os.listdir('.'):
-                print(f'{result_1[1]} already exists in this directory')
-            else:
-                os.chdir(os.path.dirname(os.getcwd()))
-                shutil.copy(result_1[1], result_2[1])
-                '''
         
 
-
-
-        
 cd('cd Projet_hyperskill_7')
-#ls()
-cp('cp jojo.txt ..')
+#rm('rm Projet_hyperskill_7\\juju.txt')
+#cp('cp .txt root')
+mv('mv .txt root')
