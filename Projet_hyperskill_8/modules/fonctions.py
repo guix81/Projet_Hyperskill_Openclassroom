@@ -66,3 +66,4 @@ def bot_test():  # génère un test
     op.verif_arg()
     solution = op.calc()
     return solution
+
