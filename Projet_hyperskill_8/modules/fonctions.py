@@ -1,4 +1,5 @@
 import random
+import os
 
 class Operation:  # centre d'opération
     list_sign = ['+', '-', '*']
@@ -99,8 +100,8 @@ def test_operation_simple():  # génère un test (opérations simples avec les n
                     compt += 1
                     break
             else:
-                print('Incorrect format')
-    print(f'Your mark is {n_sol}/5.')
+                print('Wrong format! Try again.')
+    return n_sol, '1 (simple operations with numbers 2-9)'
 
 def bot_test_2():
     bot = BotOp2()
@@ -128,5 +129,27 @@ def test_carre():  # génère un test (carrés intégraux 11-29)
                     compt += 1
                     break
             else:
-                print('Incorrect format')
-    print(f'Your mark is {n_sol}/5.')
+                print('Wrong format! Try again.')
+    return n_sol, '2 (integral squares of 11-29)'
+
+def score(n_sol, lvl):
+    list_y = ['yes', 'y', 'YES', 'Yes']
+    list_n = ['no', 'n', 'NO', 'No']
+    while True:
+        rep = input(f'Your mark is {n_sol}/5. Would you like to save the result? Enter yes or no.')
+        for i in list_y:
+            if rep == i:
+                name = input('What is your name?')
+                if 'results.txt' not in os.listdir('.'):
+                    with open('results.txt', 'w') as fp:
+                        pass
+                file = open('results.txt', 'a')
+                file.write(f'{name}: {n_sol}/5 in level {lvl}\n')
+                file.close()
+                print('The results are saved in "results.txt".')
+                break
+        for i in list_n:
+            if rep == i:
+                break
+        print('Incorrect format.')
+        break
