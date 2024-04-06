@@ -1,23 +1,17 @@
-from modules.fonctions import bot_test
+from modules.fonctions import test_operation_simple, test_carre
 
-compt = 0
-n_sol = 0
-while compt < 5:
-    sol = bot_test()
-    while True:
-        reponse = input()
-        if reponse.isdigit() or (reponse[1:].isdigit() and ('-' in reponse[0])):
-            if int(reponse) == sol:
-                print('Right!')
-                compt += 1
-                n_sol += 1
-                break
-            else:
-                print('Wrong!')
-                compt += 1
-                break
-        else:
-            print('Incorrect format')
 
-print(f'Your mark is {n_sol}/5.')
-
+while True:
+    rep = input('''Which level do you want? Enter a number:
+1 - simple operations with numbers 2-9
+2 - integral squares of 11-29\n''')
+    if rep == '1':
+        test_operation_simple()
+        break
+    elif rep == '2':
+        test_carre()
+        break
+    elif rep == 'quite':
+        break
+    else:
+        print('Incorrect format.')

@@ -40,7 +40,10 @@ class Operation:  # centre d'opération
             self.result = str(int(self.arg1) * int(self.arg2))
         return int(self.result)
     
-class BotOp(Operation):
+    def carre(self):  # clacule le carré du nombre
+        return int(self.chaine_op) ** 2
+    
+class BotOp1(Operation):
     def __init__(self):
         self.arg_1 = ''
         self.arg_2 = ''
@@ -57,8 +60,19 @@ class BotOp(Operation):
     def printed(self):  # affiche l'opération
         print(self.string_op)
 
-def bot_test():  # génère un test
-    bot = BotOp()
+class BotOp2(Operation):
+    def __init__(self):
+        self.arg_1 = ''
+
+    def genere(self):  # génère un nombre aléatoire (calcule du carré par l'utilisateur)
+        self.arg_1 = str(random.randint(11, 29))
+        return self.arg_1
+
+    def printed(self):  # affiche l'opération
+        print(self.arg_1)
+
+def bot_test_1():
+    bot = BotOp1()
     op = Operation(bot.genere())
     
     bot.printed()
@@ -67,3 +81,52 @@ def bot_test():  # génère un test
     solution = op.calc()
     return solution
 
+def test_operation_simple():  # génère un test (opérations simples avec les nombres 2-9)
+    compt = 0
+    n_sol = 0
+    while compt < 5:
+        sol = bot_test_1()
+        while True:
+            reponse = input()
+            if reponse.isdigit() or (reponse[1:].isdigit() and ('-' in reponse[0])):
+                if int(reponse) == sol:
+                    print('Right!')
+                    compt += 1
+                    n_sol += 1
+                    break
+                else:
+                    print('Wrong!')
+                    compt += 1
+                    break
+            else:
+                print('Incorrect format')
+    print(f'Your mark is {n_sol}/5.')
+
+def bot_test_2():
+    bot = BotOp2()
+    op = Operation(bot.genere())
+    
+    bot.printed()
+    solution = op.carre()
+    return solution
+
+def test_carre():  # génère un test (carrés intégraux 11-29)
+    compt = 0
+    n_sol = 0
+    while compt < 5:
+        sol = bot_test_2()
+        while True:
+            reponse = input()
+            if reponse.isdigit():
+                if int(reponse) == sol:
+                    print('Right!')
+                    compt += 1
+                    n_sol += 1
+                    break
+                else:
+                    print('Wrong!')
+                    compt += 1
+                    break
+            else:
+                print('Incorrect format')
+    print(f'Your mark is {n_sol}/5.')
