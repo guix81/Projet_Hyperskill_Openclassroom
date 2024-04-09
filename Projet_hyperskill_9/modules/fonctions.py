@@ -1,48 +1,92 @@
-import math
-
 class CafeMachine:
-    G_CAFE = 15 # graine de café en gramme pour une tasse
-    LAIT = 50  # en ml pour une tasse
-    EAU = 200  # en ml pour une tasse
+    reserve_money = 550
+    reserve_cafe = 120
+    reserve_lait = 540
+    reserve_eau = 400
+    reserve_gobelet = 9
+
     def __init__(self):
         pass
 
-    def make_cafe(self):  # fait un café
-        print('''Starting to make a coffee
-Grinding coffee beans
-Boiling water
-Mixing boiled water with crushed coffee beans
-Pouring coffee into the cup
-Pouring some milk into the cup
-Coffee is ready!''')
-        
-    def n_cafe_need(self):  # déternime la réserve des matières première par rapport au nombre de tasse café
-        rep = input('Write how many cups of coffee you will need:\n')
-        eau = CafeMachine.EAU * int(rep)
-        lait = CafeMachine.LAIT * int(rep)
-        g_cafe = CafeMachine.G_CAFE * int(rep)
-        print(f'''For {rep} cups of coffee you will need:
-{eau} ml of water
-{lait} ml of milk
-{g_cafe} g of coffee beans''')
-        
-    def capacity(self):  # détermine le nombre de tasse de café par rapport à la réserve des matières première
-        ml_eau = int(input('Write how many ml of water the coffee machine has:\n'))
-        ml_lait = int(input('Write how many ml of milk the coffee machine has:\n'))
-        g_cafe = int(input('Write how many grams of coffee beans the coffee machine has:\n'))
-        n_cafe = int(input('Write how many cups of coffee you will need:\n'))
-        tq_eau = math.floor(ml_eau / CafeMachine.EAU)
-        tq_lait = math.floor(ml_lait / CafeMachine.LAIT)
-        tq_cafe = math.floor(g_cafe / CafeMachine.G_CAFE)
-        result = [tq_eau, tq_lait, tq_cafe]
-        n_tasse = min(result)
-        if n_tasse >= n_cafe:
-            if n_tasse == n_cafe:
-                print('Yes, I can make that amount of coffee')
-            else:
-                n_tasse = n_tasse - n_cafe
-                print('Yes, I can make that amount of coffee' + f' (and even {n_tasse} more than that)')
-        elif n_cafe > n_tasse:
-            print(f'No, I can make only {n_tasse} cups of coffee')
-        else:
-            print('No, I can make only 0 cups of coffee')
+    def verification(self, obj):  # vérifie si la machine possède les fournitures nécessaire
+        if obj.cafe <= self.reserve_cafe:
+            if obj.lait <= self.reserve_lait:
+                if obj.eau <= self.reserve_eau:
+                    if obj.gobelet <= self.reserve_gobelet:
+                        return True
+                    
+    def make_cafe(self, obj):  # action: fait le café (déduit les fournitures et encaisse l'argent)
+        self.reserve_cafe -= obj.cafe
+        self.reserve_lait -= obj.lait
+        self.reserve_eau -= obj.eau
+        self.reserve_gobelet -= obj.gobelet
+        self.reserve_money += obj.prix
+        self.display()
+
+    def fill(self):
+        self.reserve_eau += int(input('Write how many ml of water you want to add:\n'))
+        self.reserve_lait += int(input('Write how many ml of milk you want to add:\n'))
+        self.reserve_cafe += int(input('Write how many grams of coffee beans you want to add:\n'))
+        self.reserve_gobelet += int(input('Write how many disposable cups you want to add:\n'))
+        print('')
+        self.display()
+
+    def take(self):
+        print(f'I gave you ${self.reserve_money}')
+        self.reserve_money -= self.reserve_money
+        print('')
+        self.display()
+    
+    def display(self):
+        print('The coffee machine has:')
+        print(f'{self.reserve_eau} ml of water')
+        print(f'{self.reserve_lait} ml of milk')
+        print(f'{self.reserve_cafe} g of coffee beans')
+        print(f'{self.reserve_gobelet} disposable cups')
+        print(f'${self.reserve_money} of money\n')
+
+
+class Expresso(CafeMachine):
+    def __init__(self):
+        self.cafe = 16 # graine de café en gramme pour une tasse
+        self.eau = 250  # en ml pour une tasse
+        self.prix = 4  # prix en dollar
+        self.lait = 0  # en ml pour une tasse
+        self.gobelet = 1 
+    
+class Latte(CafeMachine):
+    def __init__(self):
+        self.cafe = 20 
+        self.eau = 350  
+        self.prix = 7  
+        self.lait = 75  
+        self.gobelet = 1 
+    
+class Cappuccino(CafeMachine):
+    def __init__(self):
+        self.cafe = 12 
+        self.eau = 200  
+        self.prix = 6  
+        self.lait = 100   
+        self.gobelet = 1 
+    
+def decision(machine_cafe):  # argument = obj 
+    rep = input('Write action (buy, fill, take):\n')
+    if rep == 'buy':
+        choice = input('What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:')
+        if choice == '1':
+            cafe = Expresso()
+            if machine_cafe.verification(cafe):
+                machine_cafe.make_cafe(cafe)
+        elif choice == '2':
+            cafe = Latte()
+            if machine_cafe.verification(cafe):
+                machine_cafe.make_cafe(cafe)
+        elif choice == '3':
+            cafe = Cappuccino()
+            if machine_cafe.verification(cafe):
+                machine_cafe.make_cafe(cafe)
+    elif rep == 'fill':
+        machine_cafe.fill()
+    elif rep == 'take':
+        machine_cafe.take()
