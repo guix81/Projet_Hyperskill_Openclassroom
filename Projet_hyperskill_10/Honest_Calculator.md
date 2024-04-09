@@ -1,0 +1,1 @@
+Apprenez à lire des organigrammes pour affiner votre compréhension des boucles, des conditions et des algorithmes. Il vous permettra d'écrire vos propres algorithmes. Cette compétence empêche également de multiples changements de se produire pendant la production.
