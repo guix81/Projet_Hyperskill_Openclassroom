@@ -1,14 +1,12 @@
 import sys
 
 class CafeMachine:
-    reserve_money = 550
-    reserve_cafe = 120
-    reserve_lait = 540
-    reserve_eau = 400
-    reserve_gobelet = 9
-
     def __init__(self):
-        pass
+        self.reserve_money = 550
+        self.reserve_cafe = 120
+        self.reserve_lait = 540
+        self.reserve_eau = 400
+        self.reserve_gobelet = 9
 
     def verification(self, obj):  # vérifie si la machine possède les fournitures nécessaire
         if obj.cafe <= self.reserve_cafe:
