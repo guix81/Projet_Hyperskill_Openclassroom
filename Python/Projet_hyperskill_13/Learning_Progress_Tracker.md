@@ -1,0 +1,1 @@
+Pratiquez les boucles et les contrôles de flux, la décomposition fonctionnelle et les principes SOLID. Apprenez à traiter les chaînes et à tirer parti du framework unittest pour vous assurer que votre code est sans erreur. Utilisez des collections appropriées telles que des listes pour trier et filtrer les données.
