@@ -1,3 +1,7 @@
+class Tool:
+    def __init__(self, name):
+        self.name = name
+
 class ToolBox:
     def __init__(self):
         self.tool = []
@@ -14,7 +18,7 @@ class ToolBox:
             print(i.__repr__())
 
 
-class Marteau:
+class Marteau(Tool):
     def __init__(self, name, color='marron'):
         self.name = name
         self.color = color
@@ -23,14 +27,16 @@ class Marteau:
         self.color = color
 
     def clou_in(self):
+        Clou.clou_in()
         print('Je plante un clou!')
 
     def clou_out(self):
+        Clou.clou_out()
         print('Je retire un clou!')
 
     def __repr__(self):
         return self.name + ' | ' + self.color
-
+        
 
 class Tournevis:
     def __init__(self, name, taille):
@@ -38,9 +44,11 @@ class Tournevis:
         self.taille = taille
 
     def serrer_vis(self):
+        Vis.serrage()
         print('Je serre la vis!')
 
     def desserrer_vis(self):
+        Vis.desserrage()
         print('Je desserre la vis!')
 
     def __repr__(self):

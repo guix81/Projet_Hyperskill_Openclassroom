@@ -1,0 +1,1 @@
+Héritage des objets et la super() fonction.
