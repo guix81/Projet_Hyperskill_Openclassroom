@@ -3,8 +3,7 @@ import time
 from abc import ABC
 
 class Shell(ABC):
-    def __init__(self, date=time.asctime(time.localtime())):
-        self.date = date
+    pass
 #------------------------
 class File(Shell):
     def __init__(self, name, size):
