@@ -1,3 +1,5 @@
+import string
+
 import package as pac
 
 
@@ -8,7 +10,7 @@ class User(pac.Shell):
         self.password = password
         self.log = False
         self.status = status
-        pac.maj_data(self.__repr__())
+        pac.maj_data_user(self.__repr__())
 
     def login(self):
         while True:
@@ -27,10 +29,12 @@ class User(pac.Shell):
         else:
             self.status = 'offline'
 
-    def add_thread(self, title, post, obj_user):
-        pass
+    def add_thread(self):
+        title = string.capwords(input("Veuillez saisir un titre pour le thread: "))
+        thread = pac.Thread(title, self.name)  # à exporter dans une base de donnée de type json
+        return thread
 
-    def add_post(self):
+    def add_post(self, thread):
         pass
 
     def modif_post(self):

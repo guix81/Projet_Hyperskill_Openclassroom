@@ -1,13 +1,10 @@
 import package as pac
 
 
-pac.init_database()
-pac.init_obj()
+pac.init_data_user()
+pac.init_obj_user()
 
-
-post = pac.Post("go goole comme tous le monde!", pac.Shell.list_obj_user[1])
-thread = pac.Thread("Comment faire des gâteau?", post, pac.Shell.list_obj_user[1])
-print(thread.__str__())
-
+thread = pac.Shell.list_obj_user[1].add_thread()
+thread.display()
 
         
