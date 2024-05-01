@@ -3,7 +3,13 @@ import csv
 import package as pac
 
 
-#----------------------------------------------------Fonctions réutilisable-------------------------------------------------------------------
+#------------------------------------------------------Fonction init_main--------------------------------------------------------------------
+
+def init_main():
+    init_data_user()
+    init_obj_user()
+
+#----------------------------------------------------Fonctions réutilisable------------------------------------------------------------------
 def tuple_to_list(tup):
     x = []
     for i in tup:
@@ -57,3 +63,6 @@ def get_user_csv(obj_list_user_csv):  # récupère le __repr__ de l'objet non-in
             return pac.Moderateur(pac.Shell.list_user[index][0], pac.Shell.list_user[index][1], pac.Shell.list_user[index][2])
     except IndexError:
         return pac.User(pac.Shell.list_user[index][0], pac.Shell.list_user[index][1], pac.Shell.list_user[index][2])
+
+#-------------------------------------------------Fonctions lié à la class Thread------------------------------------------------------------
+
