@@ -1,7 +1,4 @@
-import string
-
 import package as pac
-
 
 
 class User(pac.Shell):
@@ -10,7 +7,7 @@ class User(pac.Shell):
         self.password = password
         self.log = False
         self.status = status
-        pac.maj_data_user(self.__repr__())
+        pac.maj_data(self.__repr__(), pac.Shell.list_user, "data_user.csv")
 
     def login(self):
         while True:
@@ -30,7 +27,7 @@ class User(pac.Shell):
             self.status = 'offline'
 
     def add_thread(self):
-        title = string.capwords(input("Veuillez saisir un titre pour le thread: "))
+        title = input("Veuillez saisir un titre pour le thread: ")
         thread = pac.Thread(title, self.name)  # à exporter dans une base de donnée de type json
         return thread
 
@@ -56,7 +53,9 @@ class Moderateur(User):
         return super().__str__() + ', ' + f"Autority: {Moderateur.AUTORITY}"
     
     def __repr__(self):
-        return pac.tuple_to_list(super().__repr__(), Admin.AUTORITY)
+        list_ = pac.tuple_to_list(super().__repr__())
+        list_.append(Moderateur.AUTORITY)
+        return list_
     
 class Admin(User):
     AUTORITY = "Admin"
@@ -65,6 +64,8 @@ class Admin(User):
         return super().__str__() + ', ' + f"Autority: {Admin.AUTORITY}"
     
     def __repr__(self):
-        return pac.tuple_to_list(super().__repr__(), Admin.AUTORITY)
+        list_ = pac.tuple_to_list(super().__repr__())
+        list_.append(Admin.AUTORITY)
+        return list_
 
 
