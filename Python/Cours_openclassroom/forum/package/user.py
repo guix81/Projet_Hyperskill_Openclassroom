@@ -7,7 +7,7 @@ class User(pac.Shell):
         self.password = password
         self.log = False
         self.status = status
-        pac.maj_data_user(self.__repr__(), pac.Shell.list_user, "data_user.csv")
+        pac.maj_data_user(self.__repr__(), pac.Shell.list_user, 'data_user.csv')
 
     def login(self):
         while True:
@@ -53,7 +53,7 @@ class Moderateur(User):
         return super().__str__() + ', ' + f"Autority: {Moderateur.AUTORITY}"
     
     def __repr__(self):
-        list_ = pac.tuple_to_list(super().__repr__())
+        list_ = pac._repr_to_list(super().__repr__())
         list_.append(Moderateur.AUTORITY)
         return list_
     
@@ -64,7 +64,7 @@ class Admin(User):
         return super().__str__() + ', ' + f"Autority: {Admin.AUTORITY}"
     
     def __repr__(self):
-        list_ = pac.tuple_to_list(super().__repr__())
+        list_ = pac._repr_to_list(super().__repr__())
         list_.append(Admin.AUTORITY)
         return list_
 

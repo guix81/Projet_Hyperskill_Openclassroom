@@ -10,9 +10,9 @@ def init_main():
     init_obj_user()
 
 #----------------------------------------------------Fonctions réutilisable------------------------------------------------------------------
-def tuple_to_list(tup):
+def _repr_to_list(_repr_):
     x = []
-    for i in tup:
+    for i in _repr_:
         x.append(i)
     return x
 
@@ -36,16 +36,19 @@ def extract_data_csv(path, file_csv, head, dest_list):
 #-------------------------------------------------Fonctions lié à la class User--------------------------------------------------------------
 
 def maj_data_user(obj__repr__, dest_list, file_csv):  # Ajoute le __repr__ de l'objet User dans le fichier data_user.csv
-    dest_list.clear()
-    init_data_user()
+    current_path = os.getcwd()
+    dest_path = os.getcwd() + '\\Python\\Cours_openclassroom\\forum\\data'
+    if current_path != dest_path:
+        os.chdir(dest_path)
 
     if obj__repr__ not in dest_list:
         with open(file_csv, "a", newline='', encoding='utf-8') as file:
             data_a = csv.writer(file, delimiter=',')
             data_a.writerow(obj__repr__)
+    os.chdir(current_path)
 
 def init_data_user():  # initialise la récupération des données du fichier data.csv
-    extract_data_csv('\\Python\\Cours_openclassroom\\forum\\data', "data_user.csv", ["name", "pass", "status", "autority"], pac.Shell.list_user)
+    extract_data_csv('\\Python\\Cours_openclassroom\\forum\\data', 'data_user.csv', ["name", "pass", "status", "autority"], pac.Shell.list_user)
 
 def init_obj_user():  # recréé une liste d'objet user dans le shell
     for data_user in pac.Shell.list_user:
