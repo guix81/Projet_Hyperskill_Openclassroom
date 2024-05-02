@@ -7,7 +7,7 @@ class User(pac.Shell):
         self.password = password
         self.log = False
         self.status = status
-        pac.maj_data_user(self.__repr__(), pac.Shell.list_user, 'data_user.csv')
+        pac.maj_data(self.__repr__(), pac.Shell.list_user, 'data_user.csv')
 
     def login(self):
         while True:

@@ -8,6 +8,7 @@ def main():
 
     #post = pac.Post("coucou!!", pac.Shell.list_obj_user[1])
     #print(post.__repr__()[0])
+    alice = pac.User("alice", "pochon", "offline")
 
     
     
