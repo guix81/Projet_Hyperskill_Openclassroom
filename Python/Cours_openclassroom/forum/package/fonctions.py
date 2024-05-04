@@ -1,5 +1,6 @@
 import os
 import csv
+import random
 import package as pac
 
 
@@ -14,6 +15,24 @@ def init_main():
     init_obj_thread()
 
 #----------------------------------------------------Fonctions réutilisable------------------------------------------------------------------
+
+def seek_in_list(shell_list, var_seek):
+    index = shell_list.index(var_seek)
+    return shell_list[index]
+
+def choice(obj_user_name):
+    content_title = input("Veuillez saisir un titre pour le thread: ")
+    content_post = input("Veuillez saisir un texte: ")
+    thread = pac.Thread(content_title, seek_in_list(pac.Shell.list_obj_user, obj_user_name))
+
+def add_id(shell_list):
+    while True:
+        id_ = str(random.randint(1, 10000))
+        if id_ in shell_list:
+            pass
+        else:
+            return id_
+
 def _repr_to_list(_repr_):
     x = []
     for i in _repr_:
@@ -52,7 +71,8 @@ def maj_data(obj__repr__, dest_shell_list, file_csv):  # Ajoute le __repr__ de l
 #-------------------------------------------------Fonctions lié à la class User--------------------------------------------------------------
 
 def init_data_user():  # initialise la récupération des données du fichier data.csv
-    extract_data_csv('\\Python\\Cours_openclassroom\\forum\\data', 'data_user.csv', ["name", "pass", "status", "autority"], pac.Shell.list_user)
+    head_user = ["name", "pass", "status", "id", "autority"]
+    extract_data_csv('\\Python\\Cours_openclassroom\\forum\\data', 'data_user.csv', head_user, pac.Shell.list_user)
 
 def init_obj_user():  # recréé une liste d'objet user dans le shell
     for data_user in pac.Shell.list_user:
@@ -60,45 +80,61 @@ def init_obj_user():  # recréé une liste d'objet user dans le shell
             obj = get_user_csv(data_user)
             pac.Shell.list_obj_user.append(obj)
 
-def get_user_csv(obj_list_user_csv):  # récupère le __repr__ de l'objet non-instancié du fichier data_user.csv et recréé l'instance de cet objet.
-    index = pac.Shell.list_user.index(obj_list_user_csv)
+def get_user_csv(data_user):  # récupère le __repr__ de l'objet non-instancié du fichier data_user.csv et recréé l'instance de cet objet.
+    index = pac.Shell.list_user.index(data_user)
     try:
-        pac.Shell.list_user[index][3] 
+        pac.Shell.list_user[index][4] 
         if pac.Shell.list_user[index][3] == 'Admin':
-            return pac.Admin(pac.Shell.list_user[index][0], pac.Shell.list_user[index][1], pac.Shell.list_user[index][2])
+            return pac.Admin(pac.Shell.list_user[index][0], 
+                             pac.Shell.list_user[index][1], 
+                             status=pac.Shell.list_user[index][2], 
+                             id_=pac.Shell.list_user[index][3])
         elif pac.Shell.list_user[index][3] == 'Modo':
-            return pac.Moderateur(pac.Shell.list_user[index][0], pac.Shell.list_user[index][1], pac.Shell.list_user[index][2])
+            return pac.Moderateur(pac.Shell.list_user[index][0], 
+                                  pac.Shell.list_user[index][1], 
+                                  status=pac.Shell.list_user[index][2], 
+                                  id_=pac.Shell.list_user[index][3])
     except IndexError:
-        return pac.User(pac.Shell.list_user[index][0], pac.Shell.list_user[index][1], pac.Shell.list_user[index][2])
+        return pac.User(pac.Shell.list_user[index][0], 
+                        pac.Shell.list_user[index][1], 
+                        status=pac.Shell.list_user[index][2], 
+                        id_=pac.Shell.list_user[index][3])
 
 #-------------------------------------------------Fonctions lié à la class Thread------------------------------------------------------------
 
 def init_data_threads():
-    head_thread = ["date_trhead", "username_thread", "title_thread"]
+    head_thread = ["title_thread", "username_thread", "date_trhead", "id", "liste id_post"]
     extract_data_csv('\\Python\\Cours_openclassroom\\forum\\data', 'data_threads.csv', head_thread, pac.Shell.list_threads)
 
 def init_obj_thread():
     for data_thread in pac.Shell.list_threads:
-        if data_thread != None:
+        if data_thread != ["title_thread", "username_thread", "date_trhead", "id", "liste id_post"]:
             obj = get_thread_csv(data_thread)
             pac.Shell.list_obj_thread.append(obj)
 
-def get_thread_csv(obj_list_thread_csv):  # en construction (lié les objet Post à l'objet Thread par id)
-    index = pac.Shell.list_threads.index(obj_list_thread_csv)
-    return pac.Thread(pac.Shell.list_threads[index][1], pac.Shell.list_threads[index][2], date_in=pac.Shell.list_threads[index][0])
+def get_thread_csv(data_thread):  # todo: lié les objet Post à l'objet Thread par id
+    index = pac.Shell.list_threads.index(data_thread)
+    return pac.Thread(pac.Shell.list_threads[index][0], 
+                      pac.Shell.list_threads[index][1], 
+                      date_in=pac.Shell.list_threads[index][2], 
+                      id_=pac.Shell.list_threads[index][3], 
+                      list_id_post=pac.Shell.list_threads[index][4])
 
 #--------------------------------------------------Fonctions lié à la class Post-------------------------------------------------------------
 
 def init_data_posts():
-    head_post = ["date_post", "username_post", "content_post"]
+    head_post = ["content_post", "username_post", "date_post", 'id']
     extract_data_csv('\\Python\\Cours_openclassroom\\forum\\data', 'data_posts.csv', head_post, pac.Shell.list_posts)
 
 def init_obj_post():
     for data_post in pac.Shell.list_posts:
-        if data_post != None:
+        if data_post != ["date_post", "username_post", "content_post", 'id']:
             obj = get_post_csv(data_post)
             pac.Shell.list_obj_post.append(obj)
 
-def get_post_csv(obj_list_post_csv):
-    index = pac.Shell.list_posts.index(obj_list_post_csv)
-    return pac.Post(pac.Shell.list_posts[index][1], pac.Shell.list_posts[index][2], date_in=pac.Shell.list_posts[index][0])
+def get_post_csv(data_post):
+    index = pac.Shell.list_posts.index(data_post)
+    return pac.Post(pac.Shell.list_posts[index][0], 
+                    pac.Shell.list_posts[index][1], 
+                    date_in=pac.Shell.list_posts[index][2], 
+                    id_=pac.Shell.list_posts[index][3])

@@ -2,11 +2,14 @@ import package as pac
 
 
 class User(pac.Shell):
-    def __init__(self, name, password, status='offline'):
+    def __init__(self, name, password, status='offline', id_=''):
         self.name = name
         self.password = password
         self.log = False
         self.status = status
+        self.id = id_
+        if id_ == '':
+            self.id = 'u' + pac.add_id(pac.Shell.list_user)
         pac.maj_data(self.__repr__(), pac.Shell.list_user, 'data_user.csv')
 
     def login(self):
@@ -27,9 +30,10 @@ class User(pac.Shell):
             self.status = 'offline'
 
     def add_thread(self):
-        title = input("Veuillez saisir un titre pour le thread: ")
-        thread = pac.Thread(title, self.name)  # à exporter dans une base de donnée de type json
-        return thread
+        title = input("Veuillez saisir le titre du thread: ")
+        content = input("Veuillez saisir le texte: ")
+        post = pac.Post(content, self.name)
+        thread = pac.Thread(title, self.name, list_id_post=[post.id])
 
     def add_post(self, thread):
         pass
@@ -44,7 +48,7 @@ class User(pac.Shell):
         return f"Pseudo: {self.name}, Satus: {self.status}"
     
     def __repr__(self):
-        return [self.name, self.password, self.status]
+        return [self.name, self.password, self.status, self.id]
     
 class Moderateur(User):
     AUTORITY = "Modo"

@@ -1,7 +1,4 @@
-name,pass,status,autority
-guix,abab,offline,Modo
-popole,1234,offline,Admin
-monique,2kilatienne,offline
-allan,tarte,offline
-sophia,magic01,offline,Modo
-alice,pochon,offline
+name,pass,status,id,autority
+alice,pochon,offline,u5109
+bad,jojo51,offline,u4599
+guix,abab,offline,u3260,Admin
