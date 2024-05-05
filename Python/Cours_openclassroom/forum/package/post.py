@@ -12,10 +12,10 @@ class Post(pac.Shell):
         self.id = id_
         if id_ == '':
             self.id = 'p' + pac.add_id(pac.Shell.list_posts)
-        pac.maj_data(self.__repr__(), pac.Shell.list_posts, 'data_posts.csv')
+        pac.maj_data(self.__repr__(), pac.Shell.list_posts, 'data_posts.csv', pac.Shell.head_post)
 
     def __str__(self):
         return f"   {self.date} par {self.shell_list_username}\n   Content: {self.content}"
     
     def __repr__(self):
-        return [self.content, self.shell_list_username, self.date, self.id]
+        return {"content_post": self.content, "username_post": self.shell_list_username, "date_post": self.date, 'id': self.id}

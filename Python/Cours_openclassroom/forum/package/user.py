@@ -10,7 +10,7 @@ class User(pac.Shell):
         self.id = id_
         if id_ == '':
             self.id = 'u' + pac.add_id(pac.Shell.list_user)
-        pac.maj_data(self.__repr__(), pac.Shell.list_user, 'data_user.csv')
+        pac.maj_data(self.__repr__(), pac.Shell.list_user, 'data_user.csv', pac.Shell.head_user)
 
     def login(self):
         while True:
@@ -33,10 +33,16 @@ class User(pac.Shell):
         title = input("Veuillez saisir le titre du thread: ")
         content = input("Veuillez saisir le texte: ")
         post = pac.Post(content, self.name)
-        thread = pac.Thread(title, self.name, list_id_post=[post.id])
+        thread = pac.Thread(title, self.name)
+        thread.obj_posts.append(post)
+        thread.list_id_posts.append(post.id)
+        pac.maj_data(thread.__repr__(), pac.Shell.list_threads, 'data_threads.csv')  # todo: créé une fonction pour modifier la base de donné
 
-    def add_post(self, thread):
-        pass
+    def add_post(self, obj_thread):
+        post = pac.Post("yoyo !", self.name)
+        index = pac.Shell.list_obj_thread.index(obj_thread)
+        pac.Shell.list_obj_thread[index].obj_posts.append(post)
+        pac.Shell.list_obj_thread[index].list_id_posts.append(post.id)  # todo: en construction
 
     def modif_post(self):
         pass
@@ -48,7 +54,7 @@ class User(pac.Shell):
         return f"Pseudo: {self.name}, Satus: {self.status}"
     
     def __repr__(self):
-        return [self.name, self.password, self.status, self.id]
+        return {'name': self.name, 'pass': self.password, 'status': self.status, 'id': self.id, 'autority': 'User'}
     
 class Moderateur(User):
     AUTORITY = "Modo"
@@ -57,9 +63,9 @@ class Moderateur(User):
         return super().__str__() + ', ' + f"Autority: {Moderateur.AUTORITY}"
     
     def __repr__(self):
-        list_ = pac._repr_to_list(super().__repr__())
-        list_.append(Moderateur.AUTORITY)
-        return list_
+        x = super().__repr__()
+        x['autority'] = Moderateur.AUTORITY
+        return x
     
 class Admin(User):
     AUTORITY = "Admin"
@@ -68,8 +74,8 @@ class Admin(User):
         return super().__str__() + ', ' + f"Autority: {Admin.AUTORITY}"
     
     def __repr__(self):
-        list_ = pac._repr_to_list(super().__repr__())
-        list_.append(Admin.AUTORITY)
-        return list_
+        x = super().__repr__()
+        x['autority'] = Admin.AUTORITY
+        return x
 
 

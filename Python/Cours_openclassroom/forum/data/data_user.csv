@@ -1,4 +1,3 @@
 name,pass,status,id,autority
-alice,pochon,offline,u5109
-bad,jojo51,offline,u4599
-guix,abab,offline,u3260,Admin
+guix,abab,offline,u2514,User
+jojo,abab,offline,u7042,Modo
