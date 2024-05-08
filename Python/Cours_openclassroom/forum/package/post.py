@@ -13,6 +13,7 @@ class Post(pac.Shell):
         if id_ == '':
             self.id = 'p' + pac.add_id(pac.Shell.list_posts)
         pac.maj_data(self.__repr__(), pac.Shell.list_posts, 'data_posts.csv', pac.Shell.head_post)
+        pac.Shell.list_obj_post.append(self)
 
     def __str__(self):
         return f"   {self.date} par {self.shell_list_username}\n   Content: {self.content}"

@@ -11,6 +11,7 @@ class User(pac.Shell):
         if id_ == '':
             self.id = 'u' + pac.add_id(pac.Shell.list_user)
         pac.maj_data(self.__repr__(), pac.Shell.list_user, 'data_user.csv', pac.Shell.head_user)
+        pac.Shell.list_obj_user.append(self)
 
     def login(self):
         while True:
@@ -36,7 +37,8 @@ class User(pac.Shell):
         thread = pac.Thread(title, self.name)
         thread.obj_posts.append(post)
         thread.list_id_posts.append(post.id)
-        pac.maj_data(thread.__repr__(), pac.Shell.list_threads, 'data_threads.csv')  # todo: créé une fonction pour modifier la base de donné
+        pac.Shell.list_threads.append(thread.__repr__())
+        pac.modif_database(thread, pac.Shell.list_obj_thread, pac.Shell.list_threads, 'data_threads.csv', pac.Shell.head_thread, key='liste_id_post', value=post.id)
 
     def add_post(self, obj_thread):
         post = pac.Post("yoyo !", self.name)

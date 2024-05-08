@@ -12,9 +12,33 @@ def init_main():
     init_data_posts()
     init_obj_post()
     init_data_threads()
-    #init_obj_thread()
+    init_obj_thread()
 
 #----------------------------------------------------Fonctions réutilisable------------------------------------------------------------------
+
+def modif_database(shell_obj, shell_obj_list, dest_shell_list, file_csv, shell_head, key=None, value=None):
+    line = []
+    current_path = os.getcwd()
+    dest_path = os.getcwd() + '\\Python\\Cours_openclassroom\\forum\\data'
+    if current_path != dest_path:
+        os.chdir(dest_path)
+    if shell_obj.__repr__() in dest_shell_list:
+        with open(file_csv, "r+", newline='', encoding='utf-8') as file:
+            data_m = csv.DictReader(file, delimiter=',')
+            for datam in data_m:
+                if shell_obj.__repr__()['id'] == datam['id']:
+                    if (key != None) and (value != None):
+                        datam[key] = value
+                line.append(datam)
+        with open(file_csv, "w", newline='', encoding='utf-8') as file:
+            data_w = csv.DictWriter(file, delimiter=',', fieldnames=shell_head)
+            data_w.writeheader()
+            for line_ in line:
+                data_w.writerow(line_)
+        index = shell_obj_list.index(shell_obj)
+        shell_obj_list.pop(index)
+    os.chdir(current_path)
+    init_obj_post()
 
 def add_id(shell_list):
     while True:
@@ -23,12 +47,6 @@ def add_id(shell_list):
             pass
         else:
             return id_
-
-def _repr_to_list(_repr_):
-    x = []
-    for i in _repr_:
-        x.append(i)
-    return x
 
 def extract_data_csv(path, file_csv, shell_head, dest_shell_list):
     current_path = os.getcwd()
@@ -47,16 +65,16 @@ def extract_data_csv(path, file_csv, shell_head, dest_shell_list):
             dest_shell_list.append(i)
     os.chdir(current_path)
 
-def maj_data(obj__repr__, dest_shell_list, file_csv, shell_head):  # Ajoute le __repr__ de l'objet dans le fichier data.csv
+def maj_data(shell_obj_repr_, dest_shell_list, file_csv, shell_head):  # Ajoute le __repr__ de l'objet dans le fichier data.csv
     current_path = os.getcwd()
     dest_path = os.getcwd() + '\\Python\\Cours_openclassroom\\forum\\data'
     if current_path != dest_path:
         os.chdir(dest_path)
 
-    if obj__repr__ not in dest_shell_list:
+    if shell_obj_repr_ not in dest_shell_list:
         with open(file_csv, "a", newline='', encoding='utf-8') as file:
             data_a = csv.DictWriter(file, delimiter=',', fieldnames=shell_head)
-            data_a.writerow(obj__repr__)
+            data_a.writerow(shell_obj_repr_)
     os.chdir(current_path)
 
 #-------------------------------------------------Fonctions lié à la class User--------------------------------------------------------------
@@ -67,8 +85,7 @@ def init_data_user():  # initialise la récupération des données du fichier da
 def init_obj_user():  # recréé une liste d'objet user dans le shell
     for data_user in pac.Shell.list_user:
         if data_user != pac.Shell.head_user:
-            obj = get_user_csv(data_user)
-            pac.Shell.list_obj_user.append(obj)
+            get_user_csv(data_user)
 
 def get_user_csv(data_user):  # récupère le __repr__ de l'objet non-instancié du fichier data_user.csv et recréé l'instance de cet objet.
     index = pac.Shell.list_user.index(data_user)
@@ -96,16 +113,15 @@ def init_data_threads():
 def init_obj_thread():
     for data_thread in pac.Shell.list_threads:
         if data_thread != pac.Shell.head_thread:
-            obj = get_thread_csv(data_thread)
-            pac.Shell.list_obj_thread.append(obj)
+            get_thread_csv(data_thread)
 
 def get_thread_csv(data_thread):  # todo: lié les objet Post à l'objet Thread par id
     index = pac.Shell.list_threads.index(data_thread)
-    return pac.Thread(pac.Shell.list_threads[index][0], 
-                      pac.Shell.list_threads[index][1], 
-                      date_in=pac.Shell.list_threads[index][2], 
-                      id_=pac.Shell.list_threads[index][3], 
-                      list_id_post=pac.Shell.list_threads[index][4])
+    return pac.Thread(pac.Shell.list_threads[index]["title_thread"], 
+                      pac.Shell.list_threads[index]["username_thread"], 
+                      date_in=pac.Shell.list_threads[index]["date_trhead"], 
+                      id_=pac.Shell.list_threads[index]["id"], 
+                      list_id_posts=pac.Shell.list_threads[index]["liste_id_post"])
 
 #--------------------------------------------------Fonctions lié à la class Post-------------------------------------------------------------
 
@@ -115,8 +131,7 @@ def init_data_posts():
 def init_obj_post():
     for data_post in pac.Shell.list_posts:
         if data_post != pac.Shell.head_post:
-            obj = get_post_csv(data_post)
-            pac.Shell.list_obj_post.append(obj)
+            get_post_csv(data_post)
 
 def get_post_csv(data_post):
     index = pac.Shell.list_posts.index(data_post)

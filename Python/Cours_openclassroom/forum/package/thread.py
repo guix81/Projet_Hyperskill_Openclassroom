@@ -4,9 +4,9 @@ import package as pac
 
 
 class Thread(pac.Shell):
-    def __init__(self, title, shell_list_username, date_in="", id_=''):
+    def __init__(self, title, shell_list_username, date_in="", id_='', list_id_posts=[]):
         self.title = title
-        self.list_id_posts = []
+        self.list_id_posts = list_id_posts
         self.obj_posts = []
         self.shell_list_username = shell_list_username
         self.date = time.asctime(time.localtime())
@@ -19,6 +19,7 @@ class Thread(pac.Shell):
         for obj in pac.Shell.list_obj_post:
             if obj.id in self.list_id_posts:
                 self.obj_posts.append(obj)
+        pac.Shell.list_obj_thread.append(self)
 
     def display(self):
         print("------------------------------------------------------------------")
@@ -32,6 +33,6 @@ class Thread(pac.Shell):
         return f"{self.date} par {self.shell_list_username}\nTitle: {self.title}"
     
     def __repr__(self):
-        return [self.title, self.shell_list_username, self.date, self.id, self.list_id_posts]
+        return {"title_thread": self.title, "username_thread": self.shell_list_username, "date_trhead": self.date, "id": self.id, "liste_id_post": self.list_id_posts}
 
     
