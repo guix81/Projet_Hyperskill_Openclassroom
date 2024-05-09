@@ -36,15 +36,29 @@ class User(pac.Shell):
         post = pac.Post(content, self.name)
         thread = pac.Thread(title, self.name)
         thread.obj_posts.append(post)
-        thread.list_id_posts.append(post.id)
+        thread.list_id_posts = thread.list_id_posts + ' ' + post.id
         pac.Shell.list_threads.append(thread.__repr__())
-        pac.modif_database(thread, pac.Shell.list_obj_thread, pac.Shell.list_threads, 'data_threads.csv', pac.Shell.head_thread, key='liste_id_post', value=post.id)
+        pac.modif_database(thread, 
+                           pac.Shell.list_obj_thread, 
+                           pac.Shell.list_threads, 
+                           'data_threads.csv', 
+                           pac.Shell.head_thread, 
+                           key='liste_id_post', 
+                           value=thread.list_id_posts)
+        pac.Shell.list_obj_thread.append(thread)
 
     def add_post(self, obj_thread):
-        post = pac.Post("yoyo !", self.name)
-        index = pac.Shell.list_obj_thread.index(obj_thread)
-        pac.Shell.list_obj_thread[index].obj_posts.append(post)
-        pac.Shell.list_obj_thread[index].list_id_posts.append(post.id)  # todo: en construction
+        content = input("Veuillez saisir le texte: ")
+        post = pac.Post(content, self.name)
+        obj_thread.obj_posts.append(post)
+        obj_thread.list_id_posts = obj_thread.list_id_posts + ' ' + post.id
+        pac.modif_database(obj_thread, 
+                           pac.Shell.list_obj_thread, 
+                           pac.Shell.list_threads, 
+                           'data_threads.csv', 
+                           pac.Shell.head_thread, 
+                           key='liste_id_post', 
+                           value=obj_thread.list_id_posts)
 
     def modif_post(self):
         pass

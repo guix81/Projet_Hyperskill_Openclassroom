@@ -22,21 +22,20 @@ def modif_database(shell_obj, shell_obj_list, dest_shell_list, file_csv, shell_h
     dest_path = os.getcwd() + '\\Python\\Cours_openclassroom\\forum\\data'
     if current_path != dest_path:
         os.chdir(dest_path)
-    if shell_obj.__repr__() in dest_shell_list:
-        with open(file_csv, "r+", newline='', encoding='utf-8') as file:
-            data_m = csv.DictReader(file, delimiter=',')
-            for datam in data_m:
-                if shell_obj.__repr__()['id'] == datam['id']:
-                    if (key != None) and (value != None):
-                        datam[key] = value
-                line.append(datam)
-        with open(file_csv, "w", newline='', encoding='utf-8') as file:
-            data_w = csv.DictWriter(file, delimiter=',', fieldnames=shell_head)
-            data_w.writeheader()
-            for line_ in line:
-                data_w.writerow(line_)
-        index = shell_obj_list.index(shell_obj)
-        shell_obj_list.pop(index)
+    with open(file_csv, "r+", newline='', encoding='utf-8') as file:
+        data_m = csv.DictReader(file, delimiter=',')
+        for datam in data_m:
+            if shell_obj.__repr__()['id'] == datam['id']:
+                if (key != None) and (value != None):
+                    datam[key] = value
+            line.append(datam)
+    with open(file_csv, "w", newline='', encoding='utf-8') as file:
+        data_w = csv.DictWriter(file, delimiter=',', fieldnames=shell_head)
+        data_w.writeheader()
+        for line_ in line:
+            data_w.writerow(line_)
+    index = shell_obj_list.index(shell_obj)
+    shell_obj_list.pop(index)
     os.chdir(current_path)
     init_obj_post()
 

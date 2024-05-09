@@ -4,7 +4,7 @@ import package as pac
 
 
 class Thread(pac.Shell):
-    def __init__(self, title, shell_list_username, date_in="", id_='', list_id_posts=[]):
+    def __init__(self, title, shell_list_username, date_in="", id_='', list_id_posts=''):
         self.title = title
         self.list_id_posts = list_id_posts
         self.obj_posts = []
