@@ -43,7 +43,8 @@ class User(pac.Shell):
                            'data_threads.csv', 
                            pac.Shell.head_thread, 
                            key='liste_id_post', 
-                           value=thread.list_id_posts)
+                           value=thread.list_id_posts, 
+                           mode='modif_val')
         pac.Shell.list_obj_thread.append(thread)
 
     def add_post(self, obj_thread):
@@ -56,7 +57,8 @@ class User(pac.Shell):
                            'data_threads.csv', 
                            pac.Shell.head_thread, 
                            key='liste_id_post', 
-                           value=obj_thread.list_id_posts)
+                           value=obj_thread.list_id_posts, 
+                           mode='modif_val')
 
     def modif_post(self, obj_post):
         content = input("Veuillez saisir le nouveau texte: ")
@@ -66,11 +68,16 @@ class User(pac.Shell):
                             'data_posts.csv', 
                             pac.Shell.head_post, 
                             key='content_post', 
-                            value=content)
+                            value=content, 
+                            mode='modif_val')
 
-
-    def del_post(self):
-        pass
+    def del_post(self, obj_post):
+        if self.name == obj_post.username:
+            pac.modif_database(obj_post, 
+                            pac.Shell.list_obj_post,  
+                            'data_posts.csv', 
+                            pac.Shell.head_post, 
+                            mode='del')
 
     def __str__(self):
         return f"Pseudo: {self.name}, Satus: {self.status}"

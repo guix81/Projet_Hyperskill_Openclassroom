@@ -16,7 +16,7 @@ def init_main():
 
 #----------------------------------------------------Fonctions réutilisable------------------------------------------------------------------
 
-def modif_database(shell_obj, shell_obj_list, file_csv, shell_head, key=None, value=None):
+def modif_database(shell_obj, shell_obj_list, file_csv, shell_head, key=None, value=None, mode=None):
     line = []
     current_path = os.getcwd()
     dest_path = os.getcwd() + '\\Python\\Cours_openclassroom\\forum\\data'
@@ -26,8 +26,11 @@ def modif_database(shell_obj, shell_obj_list, file_csv, shell_head, key=None, va
         data_m = csv.DictReader(file, delimiter=',')
         for datam in data_m:
             if shell_obj.__repr__()['id'] == datam['id']:
-                if (key != None) and (value != None):
-                    datam[key] = value
+                if mode == 'modif_val':
+                    if (key != None) and (value != None):
+                        datam[key] = value
+                elif mode == 'del':
+                    continue
             line.append(datam)
     with open(file_csv, "w", newline='', encoding='utf-8') as file:
         data_w = csv.DictWriter(file, delimiter=',', fieldnames=shell_head)
