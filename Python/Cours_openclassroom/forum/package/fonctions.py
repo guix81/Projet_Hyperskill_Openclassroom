@@ -16,7 +16,7 @@ def init_main():
 
 #----------------------------------------------------Fonctions réutilisable------------------------------------------------------------------
 
-def modif_database(shell_obj, shell_obj_list, dest_shell_list, file_csv, shell_head, key=None, value=None):
+def modif_database(shell_obj, shell_obj_list, file_csv, shell_head, key=None, value=None):
     line = []
     current_path = os.getcwd()
     dest_path = os.getcwd() + '\\Python\\Cours_openclassroom\\forum\\data'

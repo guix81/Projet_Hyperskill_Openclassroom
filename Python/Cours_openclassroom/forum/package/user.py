@@ -39,8 +39,7 @@ class User(pac.Shell):
         thread.list_id_posts = thread.list_id_posts + ' ' + post.id
         pac.Shell.list_threads.append(thread.__repr__())
         pac.modif_database(thread, 
-                           pac.Shell.list_obj_thread, 
-                           pac.Shell.list_threads, 
+                           pac.Shell.list_obj_thread,  
                            'data_threads.csv', 
                            pac.Shell.head_thread, 
                            key='liste_id_post', 
@@ -53,15 +52,22 @@ class User(pac.Shell):
         obj_thread.obj_posts.append(post)
         obj_thread.list_id_posts = obj_thread.list_id_posts + ' ' + post.id
         pac.modif_database(obj_thread, 
-                           pac.Shell.list_obj_thread, 
-                           pac.Shell.list_threads, 
+                           pac.Shell.list_obj_thread,  
                            'data_threads.csv', 
                            pac.Shell.head_thread, 
                            key='liste_id_post', 
                            value=obj_thread.list_id_posts)
 
-    def modif_post(self):
-        pass
+    def modif_post(self, obj_post):
+        content = input("Veuillez saisir le nouveau texte: ")
+        if self.name == obj_post.username:
+            pac.modif_database(obj_post, 
+                            pac.Shell.list_obj_post,  
+                            'data_posts.csv', 
+                            pac.Shell.head_post, 
+                            key='content_post', 
+                            value=content)
+
 
     def del_post(self):
         pass

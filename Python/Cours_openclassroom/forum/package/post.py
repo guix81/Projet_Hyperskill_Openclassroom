@@ -3,9 +3,9 @@ import package as pac
 
 
 class Post(pac.Shell):
-    def __init__(self, content, shell_list_username, date_in="", id_=''):
+    def __init__(self, content, username, date_in="", id_=''):
         self.content = content
-        self.shell_list_username = shell_list_username
+        self.username = username
         self.date = time.asctime(time.localtime())
         if date_in != "":
             self.date = date_in
@@ -16,7 +16,7 @@ class Post(pac.Shell):
         pac.Shell.list_obj_post.append(self)
 
     def __str__(self):
-        return f"   {self.date} par {self.shell_list_username}\n   Content: {self.content}"
+        return f"   {self.date} par {self.username}\n   Content: {self.content}"
     
     def __repr__(self):
-        return {"content_post": self.content, "username_post": self.shell_list_username, "date_post": self.date, 'id': self.id}
+        return {"content_post": self.content, "username_post": self.username, "date_post": self.date, 'id': self.id}

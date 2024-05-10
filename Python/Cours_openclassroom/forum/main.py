@@ -15,6 +15,7 @@ def main():
     #pac.Shell.list_obj_thread[0].display()
     #print(type(pac.Shell.list_obj_thread[0].list_id_posts))
     #print(type(pac.Shell.list_obj_thread[0].list_id_posts))
+    pac.Shell.list_obj_user[1].modif_post(pac.Shell.list_obj_post[4])
     
     
 
