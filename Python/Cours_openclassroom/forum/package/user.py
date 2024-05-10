@@ -60,6 +60,15 @@ class User(pac.Shell):
                            value=obj_thread.list_id_posts, 
                            mode='modif_val')
 
+    def __str__(self):
+        return f"Pseudo: {self.name}, Satus: {self.status}"
+    
+    def __repr__(self):
+        return {'name': self.name, 'pass': self.password, 'status': self.status, 'id': self.id, 'autority': 'User'}
+    
+class Moderateur(User):
+    AUTORITY = "Modo"
+
     def modif_post(self, obj_post):
         content = input("Veuillez saisir le nouveau texte: ")
         if self.name == obj_post.username:
@@ -70,24 +79,38 @@ class User(pac.Shell):
                             key='content_post', 
                             value=content, 
                             mode='modif_val')
-
+            
     def del_post(self, obj_post):
-        if self.name == obj_post.username:
-            pac.modif_database(obj_post, 
-                            pac.Shell.list_obj_post,  
-                            'data_posts.csv', 
-                            pac.Shell.head_post, 
-                            mode='del')
-
-    def __str__(self):
-        return f"Pseudo: {self.name}, Satus: {self.status}"
-    
-    def __repr__(self):
-        return {'name': self.name, 'pass': self.password, 'status': self.status, 'id': self.id, 'autority': 'User'}
-    
-class Moderateur(User):
-    AUTORITY = "Modo"
-
+        for thread in pac.Shell.list_obj_thread:
+            if obj_post.id in thread.list_id_posts:
+                chaine = thread.list_id_posts.split(' ')
+                list_id = ''
+                for id in chaine:
+                    if id == obj_post.id:
+                        continue
+                    id = id.strip(' ')
+                    list_id = ' ' + list_id + ' ' + id
+                thread.list_id_posts = list_id.strip(' ')
+                pac.modif_database(thread, 
+                                    pac.Shell.list_obj_thread, 
+                                    'data_threads.csv', 
+                                    pac.Shell.head_thread, 
+                                    key='liste_id_post', 
+                                    value=list_id.strip(' '), 
+                                    mode='modif_val')
+                    
+                pac.modif_database(obj_post, 
+                                    pac.Shell.list_obj_post,  
+                                    'data_posts.csv', 
+                                    pac.Shell.head_post, 
+                                    mode='del')
+            else:
+                pac.modif_database(obj_post, 
+                                    pac.Shell.list_obj_post,  
+                                    'data_posts.csv', 
+                                    pac.Shell.head_post, 
+                                    mode='del')
+                                       
     def __str__(self):
         return super().__str__() + ', ' + f"Autority: {Moderateur.AUTORITY}"
     
@@ -96,8 +119,28 @@ class Moderateur(User):
         x['autority'] = Moderateur.AUTORITY
         return x
     
-class Admin(User):
+class Admin(Moderateur):
     AUTORITY = "Admin"
+
+    def del_thread(self, obj_thread):
+        chaine = obj_thread.list_id_posts.split(' ')
+        list_id = []
+        for id in chaine:
+            list_id.append(id)
+        for post in pac.Shell.list_obj_post:
+            if post.id in list_id:
+                print(None)
+                pac.modif_database(post, 
+                                pac.Shell.list_obj_post,  
+                                'data_posts.csv', 
+                                pac.Shell.head_post, 
+                                mode='del')
+
+        pac.modif_database(obj_thread, 
+                            pac.Shell.list_obj_thread,  
+                            'data_threads.csv', 
+                            pac.Shell.head_thread, 
+                            mode='del')
 
     def __str__(self):
         return super().__str__() + ', ' + f"Autority: {Admin.AUTORITY}"
