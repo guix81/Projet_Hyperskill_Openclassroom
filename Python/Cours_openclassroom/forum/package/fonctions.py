@@ -1,6 +1,8 @@
 import os
 import csv
 import random
+import sys
+
 import package as pac
 
 
@@ -37,8 +39,11 @@ def modif_database(shell_obj, shell_obj_list, file_csv, shell_head, key=None, va
         data_w.writeheader()
         for line_ in line:
             data_w.writerow(line_)
-    index = shell_obj_list.index(shell_obj)
-    shell_obj_list.pop(index)
+    try:
+        index = shell_obj_list.index(shell_obj)
+        shell_obj_list.pop(index)
+    except TypeError:
+        pass
     os.chdir(current_path)
     init_obj_post()
 
@@ -93,19 +98,35 @@ def get_user_csv(data_user):  # récupère le __repr__ de l'objet non-instancié
     index = pac.Shell.list_user.index(data_user)
     if pac.Shell.list_user[index]["autority"] == 'Admin':
         return pac.Admin(pac.Shell.list_user[index]['name'], 
-                         pac.Shell.list_user[index]['pass'], 
+                         pac.Shell.list_user[index]['mdp'], 
                          status=pac.Shell.list_user[index]['status'], 
                          id_=pac.Shell.list_user[index]['id'])
     elif pac.Shell.list_user[index]["autority"] == 'Modo':
         return pac.Moderateur(pac.Shell.list_user[index]['name'], 
-                              pac.Shell.list_user[index]['pass'], 
+                              pac.Shell.list_user[index]['mdp'], 
                               status=pac.Shell.list_user[index]['status'], 
                               id_=pac.Shell.list_user[index]['id'])
     elif pac.Shell.list_user[index]["autority"] == 'User':
         return pac.User(pac.Shell.list_user[index]['name'], 
-                        pac.Shell.list_user[index]['pass'], 
+                        pac.Shell.list_user[index]['mdp'], 
                         status=pac.Shell.list_user[index]['status'], 
                         id_=pac.Shell.list_user[index]['id'])
+    
+def creat_compte():
+    token = False
+    while True:
+        pseudo = input("Veuillez choisir votre pseudo: ")
+        for obj_name in pac.Shell.list_obj_user:
+            if pseudo == obj_name.name:
+                print('Ce pseudo est déja pris!')
+                break
+            else:
+                mdp = input("Veuillez choisir un mot de pass: ")
+                user = pac.User(pseudo, mdp)
+                token = True
+                break
+        if token:
+            break
 
 #-------------------------------------------------Fonctions lié à la class Thread------------------------------------------------------------
 
@@ -117,13 +138,23 @@ def init_obj_thread():
         if data_thread != pac.Shell.head_thread:
             get_thread_csv(data_thread)
 
-def get_thread_csv(data_thread):  # todo: lié les objet Post à l'objet Thread par id
+def get_thread_csv(data_thread):
     index = pac.Shell.list_threads.index(data_thread)
     return pac.Thread(pac.Shell.list_threads[index]["title_thread"], 
                       pac.Shell.list_threads[index]["username_thread"], 
                       date_in=pac.Shell.list_threads[index]["date_trhead"], 
                       id_=pac.Shell.list_threads[index]["id"], 
                       list_id_posts=pac.Shell.list_threads[index]["liste_id_post"])
+
+def print_all_thread():
+    x = 1
+    list_ = []
+    for thread in pac.Shell.list_obj_thread:
+        print(str(x) + ": " + thread.title)
+        list_.append(str(x))
+        x += 1
+    return list_
+
 
 #--------------------------------------------------Fonctions lié à la class Post-------------------------------------------------------------
 
@@ -141,3 +172,80 @@ def get_post_csv(data_post):
                     pac.Shell.list_posts[index]["username_post"], 
                     date_in=pac.Shell.list_posts[index]["date_post"], 
                     id_=pac.Shell.list_posts[index]['id'])
+
+#------------------------------------------------------------Front-end-----------------------------------------------------------------------
+
+def front():
+    while True:
+        global obj
+        print("1: Se connecter à votre compte") 
+        print("2: Créer un compte sur le forum")
+        print("3: Quitter le programme\n")
+        choice_p = input("Faite votre choix: ")
+        if choice_p == '1':
+            while True:
+                token = False
+                choice_s = input("Veuillez saisir votre pseudo: ")
+                for obj_name in pac.Shell.list_obj_user:
+                    if choice_s == obj_name.name:
+                        obj_name.login()
+                        if obj_name.log:
+                            obj = obj_name
+                            token = True
+                            print("vous êtes connecté!")
+                            break
+                if token:
+                    while True:
+                        if obj.__repr__()['autority'] == 'User':
+                            while True:
+                                print("1: Créer un thread") 
+                                print("2: Créer un post")
+                                print("3: Déconnexion\n")
+                                choice = input("Faite votre choix: ")
+                                if choice == '1':
+                                    obj.add_thread()
+                                elif choice == '2':
+                                    while True:
+                                        list_index_thread = print_all_thread()
+                                        index = input("Veuillez choisir un thread: ")
+                                        if index in list_index_thread:
+                                            obj.add_post(pac.Shell.list_obj_thread[index])
+                                            break
+                                elif choice == '3':
+                                    obj.deconnect()
+                                    break
+                        elif obj.__repr__()['autority'] == 'Modo':
+                            while True:
+                                print("1: Créer un thread") 
+                                print("2: Créer un post")
+                                print("3: Modifier un post")
+                                print("4: Supprimer un post")
+                                print("5: Déconnexion\n")
+                                choice = input("Faite votre choix: ")
+                                if choice == '1':
+                                    obj.add_thread()
+                                elif choice == '2':
+                                    while True:
+                                        list_index_thread = print_all_thread()
+                                        index = input("Veuillez choisir un thread: ")
+                                        if index in list_index_thread:
+                                            obj.add_post(pac.Shell.list_obj_thread[index])
+                                            break
+                                elif choice == '3':
+                                    while True:
+                                        list_index_thread = print_all_thread()
+                                        index = input("Veuillez choisir un thread: ")
+                                        if index in list_index_thread:
+                                            break
+                                    pac.Shell.list_obj_thread[index].display()  #todo construire une fonction print all post
+                                elif choice == '5':
+                                    obj.deconnect()
+                                    break
+                    break
+                else:
+                    print("Le pseudo que vous avez saisi n'existe pas!")
+        elif choice_p == '2':
+            creat_compte()
+        elif choice_p == '3':
+            obj.deconnect()
+            sys.exit(1)

@@ -1,4 +1,6 @@
-name,pass,status,id,autority
-guix,abab,offline,u2514,User
-jojo,abab,offline,u7042,Modo
-popol,okidoki,offline,u1810,Admin
+name,mdp,status,id,autority
+guix,okidoki,offline,u562,Admin
+polux,dafalgan,offline,u5385,Modo
+toto,lateteatoto,offline,u8404,User
+marie,abab,offline,u2041,User
+david,soleilnoir01,offline,u9979,User

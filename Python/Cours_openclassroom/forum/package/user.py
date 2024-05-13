@@ -14,22 +14,23 @@ class User(pac.Shell):
         pac.Shell.list_obj_user.append(self)
 
     def login(self):
-        while True:
-            log_name = input("Veuillez rentrez votre pseudo: ")
-            if log_name == self.name:
-                log_password = input("Veuillez rentrez votre mot de pass: ")
-                if log_password == self.password:
-                    self.log = True
-                    break
-                else:
-                    print("Mot de pass invalide")
-            else:
-                print("Pseudo invalide")
+        log_password = input("Veuillez saisir votre mot de pass: ")
+        if log_password == self.password:
+            self.log = True
+        else:
+            print("Mot de pass invalide")
         if self.log:
             self.status = 'online'
         else:
             self.status = 'offline'
-
+        pac.modif_database(self, 
+                           pac.Shell.list_obj_user,  
+                           'data_user.csv', 
+                           pac.Shell.head_user, 
+                           key='status', 
+                           value=self.status, 
+                           mode='modif_val')
+        
     def add_thread(self):
         title = input("Veuillez saisir le titre du thread: ")
         content = input("Veuillez saisir le texte: ")
@@ -60,11 +61,20 @@ class User(pac.Shell):
                            value=obj_thread.list_id_posts, 
                            mode='modif_val')
 
+    def deconnect(self):
+        pac.modif_database(self, 
+                           pac.Shell.list_obj_user,  
+                           'data_user.csv', 
+                           pac.Shell.head_user, 
+                           key='status', 
+                           value="offline", 
+                           mode='modif_val')
+
     def __str__(self):
         return f"Pseudo: {self.name}, Satus: {self.status}"
     
     def __repr__(self):
-        return {'name': self.name, 'pass': self.password, 'status': self.status, 'id': self.id, 'autority': 'User'}
+        return {'name': self.name, 'mdp': self.password, 'status': self.status, 'id': self.id, 'autority': 'User'}
     
 class Moderateur(User):
     AUTORITY = "Modo"
