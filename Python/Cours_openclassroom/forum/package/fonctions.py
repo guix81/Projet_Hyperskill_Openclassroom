@@ -11,6 +11,7 @@ import package as pac
 def init_main():
     init_data_user()
     init_obj_user()
+    init_username()
     init_data_posts()
     init_obj_post()
     init_data_threads()
@@ -128,6 +129,10 @@ def creat_compte():
         if token:
             break
 
+def init_username():
+    for obj_user in pac.Shell.list_obj_user:
+        pac.Shell.list_username.append(obj_user.name)
+
 #-------------------------------------------------Fonctions lié à la class Thread------------------------------------------------------------
 
 def init_data_threads():
@@ -151,7 +156,7 @@ def print_all_thread():
     list_ = []
     for thread in pac.Shell.list_obj_thread:
         print(str(x) + ": " + thread.title)
-        list_.append(str(x))
+        list_.append(x)
         x += 1
     return list_
 
@@ -172,6 +177,15 @@ def get_post_csv(data_post):
                     pac.Shell.list_posts[index]["username_post"], 
                     date_in=pac.Shell.list_posts[index]["date_post"], 
                     id_=pac.Shell.list_posts[index]['id'])
+
+def print_all_posts(thread):
+    x = 1
+    list_ = []
+    for posts in thread.obj_posts:
+        print(str(x) + ": " + str(posts.__repr__()))
+        list_.append(x)
+        x += 1
+    return list_ 
 
 #------------------------------------------------------------Front-end-----------------------------------------------------------------------
 
@@ -209,9 +223,11 @@ def front():
                                         list_index_thread = print_all_thread()
                                         index = input("Veuillez choisir un thread: ")
                                         if index in list_index_thread:
-                                            obj.add_post(pac.Shell.list_obj_thread[index])
+                                            index = str(int(index) - 1)
+                                            obj.add_post(pac.Shell.list_obj_thread[int(index)])
                                             break
                                 elif choice == '3':
+                                    token = False
                                     obj.deconnect()
                                     break
                         elif obj.__repr__()['autority'] == 'Modo':
@@ -229,18 +245,111 @@ def front():
                                         list_index_thread = print_all_thread()
                                         index = input("Veuillez choisir un thread: ")
                                         if index in list_index_thread:
-                                            obj.add_post(pac.Shell.list_obj_thread[index])
+                                            index = str(int(index) - 1)
+                                            obj.add_post(pac.Shell.list_obj_thread[int(index)])
                                             break
                                 elif choice == '3':
                                     while True:
                                         list_index_thread = print_all_thread()
                                         index = input("Veuillez choisir un thread: ")
                                         if index in list_index_thread:
+                                            index = str(int(index) - 1)
                                             break
-                                    pac.Shell.list_obj_thread[index].display()  #todo construire une fonction print all post
+                                    thread = pac.Shell.list_obj_thread[int(index)]
+                                    thread.display()
+                                    while True:
+                                        list_index_post = print_all_posts(thread)
+                                        index_post = input("Veuillez choisir un post à modifier: ")
+                                        if index_post in list_index_post:
+                                            index_post = str(int(index) - 1)
+                                            obj.modif_post(thread.obj_posts[int(index_post)])
+                                            break
+                                elif choice == '4':
+                                    while True:
+                                        list_index_thread = print_all_thread()
+                                        index = input("Veuillez choisir un thread: ")
+                                        if index in list_index_thread:
+                                            index = str(int(index) - 1)
+                                            break
+                                    thread = pac.Shell.list_obj_thread[int(index)]
+                                    thread.display()
+                                    while True:
+                                        list_index_post = print_all_posts(thread)
+                                        index_post = input("Veuillez choisir un post à supprimer: ")
+                                        if index_post in list_index_post:
+                                            index_post = str(int(index) - 1)
+                                            obj.del_post(thread.obj_posts[int(index_post)])
+                                            break
                                 elif choice == '5':
+                                    token = False
                                     obj.deconnect()
                                     break
+                        elif obj.__repr__()['autority'] == 'Admin':
+                            while True:
+                                print("1: Créer un thread") 
+                                print("2: Créer un post")
+                                print("3: Modifier un post")
+                                print("4: Supprimer un thread")
+                                print("5: Supprimer un post")
+                                print("6: Déconnexion\n")
+                                choice = input("Faite votre choix: ")
+                                if choice == '1':
+                                    obj.add_thread()
+                                elif choice == '2':
+                                    while True:
+                                        list_index_thread = print_all_thread()
+                                        index = input("Veuillez choisir un thread: ")
+                                        if index in list_index_thread:
+                                            index = str(int(index) - 1)
+                                            obj.add_post(pac.Shell.list_obj_thread[int(index)])
+                                            break
+                                elif choice == '3':  # marche pas
+                                    while True:
+                                        list_index_thread = print_all_thread()
+                                        index = input("Veuillez choisir un thread: ")
+                                        if index in list_index_thread:
+                                            index = str(int(index) - 1)
+                                            break
+                                    thread = pac.Shell.list_obj_thread[int(index)]
+                                    thread.display()
+                                    while True:
+                                        list_index_post = print_all_posts(thread)
+                                        index_post = input("Veuillez choisir un post à modifier: ")
+                                        if index_post in list_index_post:
+                                            index_post = str(int(index) - 1)
+                                            obj.modif_post(thread.obj_posts[int(index_post)])
+                                            break
+                                elif choice == '4':  # marche pas
+                                    while True:
+                                        list_index_thread = print_all_thread()
+                                        index = input("Veuillez choisir un thread: ")
+                                        if index in list_index_thread:
+                                            index = str(int(index) - 1)
+                                            obj.del_thread(pac.Shell.list_obj_thread[int(index)])
+                                            break
+                                elif choice == '5':
+                                    while True:
+                                        list_index_thread = print_all_thread()
+                                        index = input("Veuillez choisir un thread: ")
+                                        if index in list_index_thread:
+                                            index = str(int(index) - 1)
+                                            break
+                                    thread = pac.Shell.list_obj_thread[int(index)]
+                                    thread.display()
+                                    while True:
+                                        list_index_post = print_all_posts(thread)
+                                        index_post = input("Veuillez choisir un post à supprimer: ")
+                                        if index_post in list_index_post:
+                                            index_post = str(int(index) - 1)
+                                            obj.del_post(thread.obj_posts[int(index_post)])
+                                            break
+                                elif choice == '6':
+                                    token = False
+                                    obj.deconnect()
+                                    break
+                        if token == False:
+                            break
+                if token == False:
                     break
                 else:
                     print("Le pseudo que vous avez saisi n'existe pas!")

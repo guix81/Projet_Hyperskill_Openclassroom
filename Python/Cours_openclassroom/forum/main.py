@@ -21,8 +21,12 @@ def main():
     #pac.Shell.list_obj_user[2].del_thread(pac.Shell.list_obj_thread[0])
     #pac.creat_compte()
     #print(pac.Shell.list_obj_user[0])
-    pac.print_all_thread()
+    #pac.print_all_posts(pac.Shell.list_obj_thread[0])
+    #pac.print_all_thread()
     #pac.front()
+    #print(pac.Shell.list_username)
+    instance = pac.MenuLogin()
+    instance.display_action()
     
     
 
