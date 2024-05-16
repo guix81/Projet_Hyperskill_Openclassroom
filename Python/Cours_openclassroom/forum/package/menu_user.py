@@ -112,16 +112,16 @@ class MenuModo(MenuUser):
             list_index_thread = pac.print_all_thread()
             index = int(input("Veuillez choisir un thread: "))
             if index in list_index_thread:
-                index = index - 1
+                index -= 1
                 break
-        thread = pac.Shell.list_obj_thread[int(index)]
+        thread = pac.Shell.list_obj_thread[index]
         thread.display()
         while True:
             list_index_post = pac.print_all_posts(thread)
             index_post = int(input("Veuillez choisir un post à supprimer: "))
             if index_post in list_index_post:
-                index_post = index - 1
-                MenuLogin.user_instance.del_post(thread.obj_posts[int(index_post)])
+                index_post -= 1
+                MenuLogin.user_instance.del_post(thread.obj_posts[index_post])
                 break
 
     def display_action(self):
@@ -145,4 +145,34 @@ class MenuModo(MenuUser):
                 break
 
 class MenuAdmin(MenuUser):
-    pass
+    def action_9(self):
+        while True:
+            list_index_thread = pac.print_all_thread()
+            index = int(input("Veuillez choisir un thread: "))
+            if index in list_index_thread:
+                index -= 1
+                MenuLogin.user_instance.del_thread(pac.Shell.list_obj_thread[index])
+                break
+
+    def display_action(self):
+        while True:
+            print("\n1: Créer un thread") 
+            print("2: Créer un post")
+            print("3: Modifier un post")
+            print("4: Supprimer un thread")
+            print("5: Supprimer un post")
+            print("6: Déconnexion\n")
+            choice = input("Faite votre choix: ")
+            if choice == '1':
+                self.action_4()
+            elif choice == '2':
+                self.action_5()
+            elif choice == '3':
+                self.action_7()
+            elif choice == '4':
+                self.action_9()
+            elif choice == '5':
+                self.action_8()
+            elif choice == '6':
+                self.action_6()
+                break
