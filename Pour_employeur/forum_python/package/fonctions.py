@@ -74,7 +74,7 @@ def extract_data_csv(path, file_csv, shell_head, dest_shell_list):  # Permet d'e
 
 def maj_data(shell_obj_repr_, dest_shell_list, file_csv, shell_head):  # Ajoute le __repr__ de l'objet dans le fichier data.csv
     current_path = os.getcwd()
-    dest_path = os.getcwd() + '\\Python\\Cours_openclassroom\\forum\\data'
+    dest_path = os.getcwd() + pac.Shell.path_data
     if current_path != dest_path:
         os.chdir(dest_path)
 
@@ -87,7 +87,7 @@ def maj_data(shell_obj_repr_, dest_shell_list, file_csv, shell_head):  # Ajoute 
 #-------------------------------------------------Fonctions lié à la class User--------------------------------------------------------------
 
 def init_data_user():  # initialise la récupération des données du fichier data.csv
-    extract_data_csv('\\Python\\Cours_openclassroom\\forum\\data', 'data_user.csv', pac.Shell.head_user, pac.Shell.list_user)
+    extract_data_csv(pac.Shell.path_data, 'data_user.csv', pac.Shell.head_user, pac.Shell.list_user)
 
 def init_obj_user():  # recréé une liste d'objet user dans le shell
     for data_user in pac.Shell.list_user:
@@ -135,7 +135,7 @@ def init_username():  # utiliser pour éviter les doublons de pseudo dans la bas
 #-------------------------------------------------Fonctions lié à la class Thread------------------------------------------------------------
 
 def init_data_threads():
-    extract_data_csv('\\Python\\Cours_openclassroom\\forum\\data', 'data_threads.csv', pac.Shell.head_thread, pac.Shell.list_threads)
+    extract_data_csv(pac.Shell.path_data, 'data_threads.csv', pac.Shell.head_thread, pac.Shell.list_threads)
 
 def init_obj_thread():
     for data_thread in pac.Shell.list_threads:
@@ -163,7 +163,7 @@ def print_all_thread():  # print et renvoie le nombre de thread
 #--------------------------------------------------Fonctions lié à la class Post-------------------------------------------------------------
 
 def init_data_posts():
-    extract_data_csv('\\Python\\Cours_openclassroom\\forum\\data', 'data_posts.csv', pac.Shell.head_post, pac.Shell.list_posts)
+    extract_data_csv(pac.Shell.path_data, 'data_posts.csv', pac.Shell.head_post, pac.Shell.list_posts)
 
 def init_obj_post():
     for data_post in pac.Shell.list_posts:
