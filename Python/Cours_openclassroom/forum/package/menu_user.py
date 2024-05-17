@@ -8,7 +8,7 @@ class MenuLogin(pac.Shell):
         self.user = None
         self.login_user = False
 
-    def action_1(self):  # print("1: Se connecter à votre compte") 
+    def action_1(self):  # Se connecter à votre compte 
         while True:
             choice_s = input("Veuillez saisir votre pseudo: ")
             for obj_name in pac.Shell.list_obj_user:
@@ -37,10 +37,10 @@ class MenuLogin(pac.Shell):
             menu_admin = MenuAdmin()
             menu_admin.display_action()
     
-    def action_2(self):  # print("2: Créer un compte sur le forum")
+    def action_2(self):  # Créer un compte sur le forum
         pac.creat_compte()
 
-    def action_3(self):  # print("3: Quitter le programme\n")
+    def action_3(self):  # Quitter le programme
         self.user.deconnect()
         sys.exit(1)
 
@@ -58,10 +58,10 @@ class MenuLogin(pac.Shell):
                 self.action_3()
 
 class MenuUser(MenuLogin):
-    def action_4(self):  # print("1: Créer un thread")
+    def action_4(self):  # Créer un thread
         MenuLogin.user_instance.add_thread()
 
-    def action_5(self):  # print("2: Créer un post")
+    def action_5(self):  # Créer un post
         while True:
             list_index_thread = pac.print_all_thread()
             index = int(input("Veuillez choisir un thread: "))
@@ -70,7 +70,7 @@ class MenuUser(MenuLogin):
                 MenuLogin.user_instance.add_post(pac.Shell.list_obj_thread[int(index)])
                 break
 
-    def action_6(self):  # print("3: Déconnexion\n")
+    def action_6(self):  # Déconnexion
         self.login_user = False
         MenuLogin.user_instance.deconnect()
         MenuLogin.user_instance = None
@@ -90,7 +90,7 @@ class MenuUser(MenuLogin):
                 break
 
 class MenuModo(MenuUser):
-    def action_7(self):  # 3: Modifier un post
+    def action_7(self):  # Modifier un post
         while True:
             list_index_thread = pac.print_all_thread()
             index = int(input("Veuillez choisir un thread: "))
@@ -107,7 +107,7 @@ class MenuModo(MenuUser):
                 MenuLogin.user_instance.modif_post(thread.obj_posts[index_post])
                 break
 
-    def action_8(self):  # 4: Supprimer un post
+    def action_8(self):  # Supprimer un post
         while True:
             list_index_thread = pac.print_all_thread()
             index = int(input("Veuillez choisir un thread: "))
@@ -145,7 +145,7 @@ class MenuModo(MenuUser):
                 break
 
 class MenuAdmin(MenuUser):
-    def action_9(self):
+    def action_9(self):  # Supprimer un thread
         while True:
             list_index_thread = pac.print_all_thread()
             index = int(input("Veuillez choisir un thread: "))

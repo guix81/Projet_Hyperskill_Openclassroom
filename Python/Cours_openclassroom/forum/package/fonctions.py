@@ -1,7 +1,6 @@
 import os
 import csv
 import random
-import sys
 
 import package as pac
 
@@ -48,7 +47,7 @@ def modif_database(shell_obj, shell_obj_list, file_csv, shell_head, key=None, va
     os.chdir(current_path)
     init_obj_post()
 
-def add_id(shell_list):
+def add_id(shell_list):  # Permet d'assossier un élément à un id
     while True:
         id_ = str(random.randint(1, 10000))
         if id_ in shell_list:
@@ -56,7 +55,7 @@ def add_id(shell_list):
         else:
             return id_
 
-def extract_data_csv(path, file_csv, shell_head, dest_shell_list):
+def extract_data_csv(path, file_csv, shell_head, dest_shell_list):  # Permet d'extraire la data des fichiers csv
     current_path = os.getcwd()
     dest_path = os.getcwd() + path
     if current_path != dest_path:
@@ -129,7 +128,7 @@ def creat_compte():
         if token:
             break
 
-def init_username():
+def init_username():  # utiliser pour éviter les doublons de pseudo dans la base de donnée
     for obj_user in pac.Shell.list_obj_user:
         pac.Shell.list_username.append(obj_user.name)
 
@@ -151,7 +150,7 @@ def get_thread_csv(data_thread):
                       id_=pac.Shell.list_threads[index]["id"], 
                       list_id_posts=pac.Shell.list_threads[index]["liste_id_post"])
 
-def print_all_thread():
+def print_all_thread():  # print et renvoie le nombre de thread
     x = 1
     list_ = []
     for thread in pac.Shell.list_obj_thread:
