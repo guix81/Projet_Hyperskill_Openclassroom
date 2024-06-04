@@ -1,0 +1,1 @@
+Ce code permet de créer une itinérance des listes dans la liste de manière récursif.
