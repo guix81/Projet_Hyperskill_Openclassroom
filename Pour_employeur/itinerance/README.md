@@ -1,1 +1,1 @@
-Ce code permet de créer une itinérance des listes dans la liste de manière récursif.
+Ce code permet de créer une récurrence itinérante de toutes les listes contenu dans une liste.
