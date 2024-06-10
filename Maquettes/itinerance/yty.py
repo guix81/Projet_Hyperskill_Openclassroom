@@ -3,7 +3,7 @@ class Yty:
         self.list_ = list_
         self.lst_end = []
 
-    def decomp(self, lst):
+    def decomp(self, lst) -> None:
         if isinstance(lst, list):
             for i in lst:
                 if not isinstance(i, list):
@@ -19,14 +19,15 @@ class Yty:
                 self.lst_end.append(i)
         return self.lst_end
             
-    def display(self):
+    def display(self) -> None:
         print('lst-end: ' + str(self.lst_end))
 
-  
-""" Exemple        
+
+'''
+Exemple        
 x = [1, [2, 3], 4, [5, 6, [7, 8, [9, 10]]]]
 
-lst = Yty(x)  # instance objet
+lst = Yty(x)  
 
 for i in lst.process():
     print(i)
@@ -41,9 +42,8 @@ for i in lst.process():
 >>> 8
 >>> 9
 >>> 10
-"""
 
-
+'''
 
 
 
