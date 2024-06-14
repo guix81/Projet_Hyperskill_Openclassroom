@@ -1,0 +1,1 @@
+Ce code permet de créer une récurrence d'itération de toutes les listes contenu dans une liste.
