@@ -41,7 +41,6 @@ class MenuLogin(pac.Shell):
         pac.creat_compte()
 
     def action_3(self):  # Quitter le programme
-        self.user.deconnect()
         sys.exit(1)
 
     def display_action(self):

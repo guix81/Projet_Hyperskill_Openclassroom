@@ -21,7 +21,7 @@ def init_main():
 def modif_database(shell_obj, shell_obj_list, file_csv, shell_head, key=None, value=None, mode=None):
     line = []
     current_path = os.getcwd()
-    dest_path = os.getcwd() + '\\Python\\Cours_openclassroom\\forum\\data'
+    dest_path = os.getcwd() + pac.Shell.path_data
     if current_path != dest_path:
         os.chdir(dest_path)
     with open(file_csv, "r+", newline='', encoding='utf-8') as file:

@@ -11,4 +11,4 @@ class Shell(ABC):
     head_user = ["name", "mdp", "status", "id", "autority"]
     head_thread = ["title_thread", "username_thread", "date_trhead", "id", "liste_id_post"]
     head_post = ["content_post", "username_post", "date_post", 'id']
-    path_data = "\\Pour_employeur\\forum_python\\data"
+    path_data = "\\Maquettes\\forum_python\\data"
