@@ -8,13 +8,18 @@ import package as pac
 #------------------------------------------------------Fonction init_main--------------------------------------------------------------------
 
 def init_main():
-    init_data_user()
-    init_obj_user()
-    init_username()
-    init_data_posts()
-    init_obj_post()
-    init_data_threads()
-    init_obj_thread()
+    a = init_data_user()
+    b = init_obj_user()
+    c = init_username()
+    d = init_data_posts()
+    e = init_obj_post()
+    f = init_data_threads()
+    i = init_obj_thread()
+    r = a + b + c + d + e + f + i
+    if r == 7:
+        return True
+    else:
+        return False
 
 #----------------------------------------------------Fonctions réutilisable------------------------------------------------------------------
 
@@ -46,6 +51,7 @@ def modif_database(shell_obj, shell_obj_list, file_csv, shell_head, key=None, va
         pass
     os.chdir(current_path)
     init_obj_post()
+    return True
 
 def add_id(shell_list):  # Permet d'assossier un élément à un id
     while True:
@@ -56,11 +62,13 @@ def add_id(shell_list):  # Permet d'assossier un élément à un id
             return id_
 
 def extract_data_csv(path, file_csv, shell_head, dest_shell_list):  # Permet d'extraire la data des fichiers csv
+    token = False
     current_path = os.getcwd()
     dest_path = os.getcwd() + path
+    
     if current_path != dest_path:
         os.chdir(dest_path)
-
+    
     if file_csv not in os.listdir('.'):  # Si le fichier n'existe pas, il sera créé avec une en-tête.
         with open(file_csv, "w", newline='', encoding='utf-8') as file:
             data_w = csv.DictWriter(file, delimiter=',', fieldnames=shell_head)
@@ -70,7 +78,9 @@ def extract_data_csv(path, file_csv, shell_head, dest_shell_list):  # Permet d'e
         data_r = csv.DictReader(file, delimiter=',')
         for i in data_r:
             dest_shell_list.append(i)
+        token = True
     os.chdir(current_path)
+    return token
 
 def maj_data(shell_obj_repr_, dest_shell_list, file_csv, shell_head):  # Ajoute le __repr__ de l'objet dans le fichier data.csv
     current_path = os.getcwd()
@@ -87,12 +97,15 @@ def maj_data(shell_obj_repr_, dest_shell_list, file_csv, shell_head):  # Ajoute 
 #-------------------------------------------------Fonctions lié à la class User--------------------------------------------------------------
 
 def init_data_user():  # initialise la récupération des données du fichier data.csv
-    extract_data_csv(pac.Shell.path_data, 'data_user.csv', pac.Shell.head_user, pac.Shell.list_user)
+    return extract_data_csv(pac.Shell.path_data, 'data_user.csv', pac.Shell.head_user, pac.Shell.list_user)
 
 def init_obj_user():  # recréé une liste d'objet user dans le shell
     for data_user in pac.Shell.list_user:
         if data_user != pac.Shell.head_user:
-            get_user_csv(data_user)
+            obj = get_user_csv(data_user)
+            if (isinstance(obj, pac.Admin) or isinstance(obj, pac.Moderateur) or isinstance(obj, pac.User)) == False:
+                return False
+    return True
 
 def get_user_csv(data_user):  # récupère le __repr__ de l'objet non-instancié du fichier data_user.csv et recréé l'instance de cet objet.
     index = pac.Shell.list_user.index(data_user)
@@ -131,16 +144,20 @@ def creat_compte():
 def init_username():  # utiliser pour éviter les doublons de pseudo dans la base de donnée
     for obj_user in pac.Shell.list_obj_user:
         pac.Shell.list_username.append(obj_user.name)
+    return True
 
 #-------------------------------------------------Fonctions lié à la class Thread------------------------------------------------------------
 
 def init_data_threads():
-    extract_data_csv(pac.Shell.path_data, 'data_threads.csv', pac.Shell.head_thread, pac.Shell.list_threads)
+    return extract_data_csv(pac.Shell.path_data, 'data_threads.csv', pac.Shell.head_thread, pac.Shell.list_threads)
 
 def init_obj_thread():
     for data_thread in pac.Shell.list_threads:
         if data_thread != pac.Shell.head_thread:
-            get_thread_csv(data_thread)
+            obj = get_thread_csv(data_thread)
+            if isinstance(obj, pac.Thread) == False:
+                return False
+    return True
 
 def get_thread_csv(data_thread):
     index = pac.Shell.list_threads.index(data_thread)
@@ -163,12 +180,15 @@ def print_all_thread():  # print et renvoie le nombre de thread
 #--------------------------------------------------Fonctions lié à la class Post-------------------------------------------------------------
 
 def init_data_posts():
-    extract_data_csv(pac.Shell.path_data, 'data_posts.csv', pac.Shell.head_post, pac.Shell.list_posts)
+    return extract_data_csv(pac.Shell.path_data, 'data_posts.csv', pac.Shell.head_post, pac.Shell.list_posts)
 
 def init_obj_post():
     for data_post in pac.Shell.list_posts:
         if data_post != pac.Shell.head_post:
-            get_post_csv(data_post)
+            obj = get_post_csv(data_post)
+            if isinstance(obj, pac.Post) == False:
+                return False
+    return True
 
 def get_post_csv(data_post):
     index = pac.Shell.list_posts.index(data_post)

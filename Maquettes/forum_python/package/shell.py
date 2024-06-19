@@ -8,7 +8,10 @@ class Shell(ABC):
     list_obj_post = []
     list_threads = []
     list_obj_thread = []
-    head_user = ["name", "mdp", "status", "id", "autority"]
-    head_thread = ["title_thread", "username_thread", "date_trhead", "id", "liste_id_post"]
-    head_post = ["content_post", "username_post", "date_post", 'id']
+    lsts = (list_user, list_posts, list_threads)
+    head_user = ("name", "mdp", "status", "id", "autority")
+    head_thread = ("title_thread", "username_thread", "date_trhead", "id", "liste_id_post")
+    head_post = ("content_post", "username_post", "date_post", 'id')
+    heads = (head_user, head_post, head_thread)
     path_data = "\\Maquettes\\forum_python\\data"
+    csv_files = ("data_user.csv", "data_posts.csv", "data_threads.csv")
