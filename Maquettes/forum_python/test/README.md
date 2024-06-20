@@ -1,0 +1,1 @@
+Saisir 'python3.12 -m pytest -rA -v' dans le terminal pour lancer le test avec la dépendance 'Pytest'.

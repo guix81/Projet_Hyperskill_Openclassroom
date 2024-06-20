@@ -94,6 +94,20 @@ def maj_data(shell_obj_repr_, dest_shell_list, file_csv, shell_head):  # Ajoute 
             data_a.writerow(shell_obj_repr_)
     os.chdir(current_path)
 
+def verif_data(file_csv, shell_obj):
+    current_path = os.getcwd()
+    dest_path = os.getcwd() + pac.Shell.path_data
+    if current_path != dest_path:
+        os.chdir(dest_path)
+    with open(file_csv, "r", newline='', encoding='utf-8') as file:
+        data_m = csv.DictReader(file, delimiter=',')
+        for datam in data_m:
+            if shell_obj.__repr__()['id'] == datam['id']:
+                os.chdir(current_path)
+                return True
+        os.chdir(current_path)
+        return False
+
 #-------------------------------------------------Fonctions lié à la class User--------------------------------------------------------------
 
 def init_data_user():  # initialise la récupération des données du fichier data.csv

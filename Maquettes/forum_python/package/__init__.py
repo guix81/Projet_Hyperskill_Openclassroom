@@ -11,7 +11,8 @@ from .fonctions import (init_main,
                         extract_data_csv,
                         init_data_user,
                         init_data_posts,
-                        init_data_threads)
+                        init_data_threads, 
+                        verif_data)
 from .post import Post
 from .thread import Thread
 from .menu_user import MenuLogin, MenuUser, MenuModo, MenuAdmin
