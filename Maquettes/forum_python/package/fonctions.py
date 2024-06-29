@@ -8,6 +8,7 @@ import package as pac
 #------------------------------------------------------Fonction init_main--------------------------------------------------------------------
 
 def init_main():
+    """Fonction qui initialise l'extraction des datas des fichiers csv puis recréér les objets issue de celles-ci"""
     a = init_data_user()
     b = init_obj_user()
     c = init_username()
@@ -24,6 +25,7 @@ def init_main():
 #----------------------------------------------------Fonctions réutilisable------------------------------------------------------------------
 
 def modif_database(shell_obj, shell_obj_list, file_csv, shell_head, key=None, value=None, mode=None):
+    """Modifie la data dans un fichier csv spécifié."""
     line = []
     current_path = os.getcwd()
     dest_path = os.getcwd() + pac.Shell.path_data
@@ -53,7 +55,8 @@ def modif_database(shell_obj, shell_obj_list, file_csv, shell_head, key=None, va
     init_obj_post()
     return True
 
-def add_id(shell_list):  # Permet d'assossier un élément à un id
+def add_id(shell_list):
+    """Permet d'assossier un élément (user, post, thread) à un id."""
     while True:
         id_ = str(random.randint(1, 10000))
         if id_ in shell_list:
@@ -61,7 +64,8 @@ def add_id(shell_list):  # Permet d'assossier un élément à un id
         else:
             return id_
 
-def extract_data_csv(path, file_csv, shell_head, dest_shell_list):  # Permet d'extraire la data des fichiers csv
+def extract_data_csv(path, file_csv, shell_head, dest_shell_list):
+    """Permet d'extraire la data des fichiers csv."""
     token = False
     current_path = os.getcwd()
     dest_path = os.getcwd() + path
@@ -82,7 +86,8 @@ def extract_data_csv(path, file_csv, shell_head, dest_shell_list):  # Permet d'e
     os.chdir(current_path)
     return token
 
-def maj_data(shell_obj_repr_, dest_shell_list, file_csv, shell_head):  # Ajoute le __repr__ de l'objet dans le fichier data.csv
+def maj_data(shell_obj_repr_, dest_shell_list, file_csv, shell_head):
+    """Ajoute le __repr__ de l'objet dans le fichier data.csv."""
     current_path = os.getcwd()
     dest_path = os.getcwd() + pac.Shell.path_data
     if current_path != dest_path:
@@ -95,6 +100,7 @@ def maj_data(shell_obj_repr_, dest_shell_list, file_csv, shell_head):  # Ajoute 
     os.chdir(current_path)
 
 def verif_data(file_csv, shell_obj):
+    """Vérifie l'existance d'une data dans le fichier csv."""
     current_path = os.getcwd()
     dest_path = os.getcwd() + pac.Shell.path_data
     if current_path != dest_path:
@@ -110,10 +116,12 @@ def verif_data(file_csv, shell_obj):
 
 #-------------------------------------------------Fonctions lié à la class User--------------------------------------------------------------
 
-def init_data_user():  # initialise la récupération des données du fichier data.csv
+def init_data_user():
+    """initialise la récupération des données du fichier data_user.csv."""
     return extract_data_csv(pac.Shell.path_data, 'data_user.csv', pac.Shell.head_user, pac.Shell.list_user)
 
-def init_obj_user():  # recréé une liste d'objet user dans le shell
+def init_obj_user():
+    """recréé une liste d'objet user dans le shell"""
     for data_user in pac.Shell.list_user:
         if data_user != pac.Shell.head_user:
             obj = get_user_csv(data_user)
@@ -121,7 +129,8 @@ def init_obj_user():  # recréé une liste d'objet user dans le shell
                 return False
     return True
 
-def get_user_csv(data_user):  # récupère le __repr__ de l'objet non-instancié du fichier data_user.csv et recréé l'instance de cet objet.
+def get_user_csv(data_user):
+    """récupère le __repr__ de l'objet non-instancié du fichier data_user.csv et recréé l'instance de cet objet."""
     index = pac.Shell.list_user.index(data_user)
     if pac.Shell.list_user[index]["autority"] == 'Admin':
         return pac.Admin(pac.Shell.list_user[index]['name'], 
@@ -140,6 +149,7 @@ def get_user_csv(data_user):  # récupère le __repr__ de l'objet non-instancié
                         id_=pac.Shell.list_user[index]['id'])
     
 def creat_compte():
+    """Créer un compte pour l'utilisateur"""
     token = False
     while True:
         pseudo = input("Veuillez choisir votre pseudo: ")
@@ -155,7 +165,8 @@ def creat_compte():
         if token:
             break
 
-def init_username():  # utiliser pour éviter les doublons de pseudo dans la base de donnée
+def init_username():
+    """utilisé pour éviter les doublons de pseudo dans la base de donnée."""
     for obj_user in pac.Shell.list_obj_user:
         pac.Shell.list_username.append(obj_user.name)
     return True
@@ -163,9 +174,11 @@ def init_username():  # utiliser pour éviter les doublons de pseudo dans la bas
 #-------------------------------------------------Fonctions lié à la class Thread------------------------------------------------------------
 
 def init_data_threads():
+    """initialise la récupération des données du fichier data_threads.csv."""
     return extract_data_csv(pac.Shell.path_data, 'data_threads.csv', pac.Shell.head_thread, pac.Shell.list_threads)
 
 def init_obj_thread():
+    """recréé une liste d'objet thread dans le shell"""
     for data_thread in pac.Shell.list_threads:
         if data_thread != pac.Shell.head_thread:
             obj = get_thread_csv(data_thread)
@@ -174,6 +187,7 @@ def init_obj_thread():
     return True
 
 def get_thread_csv(data_thread):
+    """récupère le __repr__ de l'objet non-instancié du fichier data_threads.csv et recréé l'instance de cet objet."""
     index = pac.Shell.list_threads.index(data_thread)
     return pac.Thread(pac.Shell.list_threads[index]["title_thread"], 
                       pac.Shell.list_threads[index]["username_thread"], 
@@ -181,7 +195,8 @@ def get_thread_csv(data_thread):
                       id_=pac.Shell.list_threads[index]["id"], 
                       list_id_posts=pac.Shell.list_threads[index]["liste_id_post"])
 
-def print_all_thread():  # print et renvoie le nombre de thread
+def print_all_thread():
+    """print et renvoie le nombre de thread"""
     x = 1
     list_ = []
     for thread in pac.Shell.list_obj_thread:
@@ -194,9 +209,11 @@ def print_all_thread():  # print et renvoie le nombre de thread
 #--------------------------------------------------Fonctions lié à la class Post-------------------------------------------------------------
 
 def init_data_posts():
+    """initialise la récupération des données du fichier data_posts.csv."""
     return extract_data_csv(pac.Shell.path_data, 'data_posts.csv', pac.Shell.head_post, pac.Shell.list_posts)
 
 def init_obj_post():
+    """recréé une liste d'objet post dans le shell"""
     for data_post in pac.Shell.list_posts:
         if data_post != pac.Shell.head_post:
             obj = get_post_csv(data_post)
@@ -205,6 +222,7 @@ def init_obj_post():
     return True
 
 def get_post_csv(data_post):
+    """récupère le __repr__ de l'objet non-instancié du fichier data_posts.csv et recréé l'instance de cet objet."""
     index = pac.Shell.list_posts.index(data_post)
     return pac.Post(pac.Shell.list_posts[index]["content_post"], 
                     pac.Shell.list_posts[index]["username_post"], 
@@ -212,6 +230,7 @@ def get_post_csv(data_post):
                     id_=pac.Shell.list_posts[index]['id'])
 
 def print_all_posts(thread):
+    """print et renvoie le nombre de post"""
     x = 1
     list_ = []
     for posts in thread.obj_posts:
@@ -223,5 +242,6 @@ def print_all_posts(thread):
 #------------------------------------------------------------Front-end-----------------------------------------------------------------------
 
 def front():
+    """Initialise le pupitre pour l'utilisateur (dans le terminal)"""
     instance = pac.MenuLogin()
     instance.display_action()

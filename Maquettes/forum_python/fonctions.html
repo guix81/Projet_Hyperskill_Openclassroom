@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module fonctions</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title">fonctions</strong></td>
+<td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cguix6%5Cdocuments%5Cgithub%5Cprojet_hyperskill%5Cmaquettes%5Cforum_python%5Cpackage%5Cfonctions.py">c:\users\guix6\documents\github\projet_hyperskill\maquettes\forum_python\package\fonctions.py</a></td></tr></table>
+    <p></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="csv.html">csv</a><br>
+</td><td class="multicolumn"><a href="os.html">os</a><br>
+</td><td class="multicolumn"><a href="package.html">package</a><br>
+</td><td class="multicolumn"><a href="random.html">random</a><br>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-add_id"><strong>add_id</strong></a>(shell_list)</dt><dd><span class="code">Permet&nbsp;d'assossier&nbsp;un&nbsp;élément&nbsp;(user,&nbsp;post,&nbsp;thread)&nbsp;à&nbsp;un&nbsp;id.</span></dd></dl>
+ <dl><dt><a name="-creat_compte"><strong>creat_compte</strong></a>()</dt><dd><span class="code">Créer&nbsp;un&nbsp;compte&nbsp;pour&nbsp;l'utilisateur</span></dd></dl>
+ <dl><dt><a name="-extract_data_csv"><strong>extract_data_csv</strong></a>(path, file_csv, shell_head, dest_shell_list)</dt><dd><span class="code">Permet&nbsp;d'extraire&nbsp;la&nbsp;data&nbsp;des&nbsp;fichiers&nbsp;csv.</span></dd></dl>
+ <dl><dt><a name="-front"><strong>front</strong></a>()</dt><dd><span class="code">Initialise&nbsp;le&nbsp;pupitre&nbsp;pour&nbsp;l'utilisateur&nbsp;(dans&nbsp;le&nbsp;terminal)</span></dd></dl>
+ <dl><dt><a name="-get_post_csv"><strong>get_post_csv</strong></a>(data_post)</dt><dd><span class="code">récupère&nbsp;le&nbsp;__repr__&nbsp;de&nbsp;l'objet&nbsp;non-instancié&nbsp;du&nbsp;fichier&nbsp;data_posts.csv&nbsp;et&nbsp;recréé&nbsp;l'instance&nbsp;de&nbsp;cet&nbsp;objet.</span></dd></dl>
+ <dl><dt><a name="-get_thread_csv"><strong>get_thread_csv</strong></a>(data_thread)</dt><dd><span class="code">récupère&nbsp;le&nbsp;__repr__&nbsp;de&nbsp;l'objet&nbsp;non-instancié&nbsp;du&nbsp;fichier&nbsp;data_threads.csv&nbsp;et&nbsp;recréé&nbsp;l'instance&nbsp;de&nbsp;cet&nbsp;objet.</span></dd></dl>
+ <dl><dt><a name="-get_user_csv"><strong>get_user_csv</strong></a>(data_user)</dt><dd><span class="code">récupère&nbsp;le&nbsp;__repr__&nbsp;de&nbsp;l'objet&nbsp;non-instancié&nbsp;du&nbsp;fichier&nbsp;data_user.csv&nbsp;et&nbsp;recréé&nbsp;l'instance&nbsp;de&nbsp;cet&nbsp;objet.</span></dd></dl>
+ <dl><dt><a name="-init_data_posts"><strong>init_data_posts</strong></a>()</dt><dd><span class="code">initialise&nbsp;la&nbsp;récupération&nbsp;des&nbsp;données&nbsp;du&nbsp;fichier&nbsp;data_posts.csv.</span></dd></dl>
+ <dl><dt><a name="-init_data_threads"><strong>init_data_threads</strong></a>()</dt><dd><span class="code">initialise&nbsp;la&nbsp;récupération&nbsp;des&nbsp;données&nbsp;du&nbsp;fichier&nbsp;data_threads.csv.</span></dd></dl>
+ <dl><dt><a name="-init_data_user"><strong>init_data_user</strong></a>()</dt><dd><span class="code">initialise&nbsp;la&nbsp;récupération&nbsp;des&nbsp;données&nbsp;du&nbsp;fichier&nbsp;data_user.csv.</span></dd></dl>
+ <dl><dt><a name="-init_main"><strong>init_main</strong></a>()</dt><dd><span class="code">Fonction&nbsp;qui&nbsp;initialise&nbsp;l'extraction&nbsp;des&nbsp;datas&nbsp;des&nbsp;fichiers&nbsp;csv&nbsp;puis&nbsp;recréér&nbsp;les&nbsp;objets&nbsp;issue&nbsp;de&nbsp;celles-ci</span></dd></dl>
+ <dl><dt><a name="-init_obj_post"><strong>init_obj_post</strong></a>()</dt><dd><span class="code">recréé&nbsp;une&nbsp;liste&nbsp;d'objet&nbsp;post&nbsp;dans&nbsp;le&nbsp;shell</span></dd></dl>
+ <dl><dt><a name="-init_obj_thread"><strong>init_obj_thread</strong></a>()</dt><dd><span class="code">recréé&nbsp;une&nbsp;liste&nbsp;d'objet&nbsp;thread&nbsp;dans&nbsp;le&nbsp;shell</span></dd></dl>
+ <dl><dt><a name="-init_obj_user"><strong>init_obj_user</strong></a>()</dt><dd><span class="code">recréé&nbsp;une&nbsp;liste&nbsp;d'objet&nbsp;user&nbsp;dans&nbsp;le&nbsp;shell</span></dd></dl>
+ <dl><dt><a name="-init_username"><strong>init_username</strong></a>()</dt><dd><span class="code">utilisé&nbsp;pour&nbsp;éviter&nbsp;les&nbsp;doublons&nbsp;de&nbsp;pseudo&nbsp;dans&nbsp;la&nbsp;base&nbsp;de&nbsp;donnée.</span></dd></dl>
+ <dl><dt><a name="-maj_data"><strong>maj_data</strong></a>(shell_obj_repr_, dest_shell_list, file_csv, shell_head)</dt><dd><span class="code">Ajoute&nbsp;le&nbsp;__repr__&nbsp;de&nbsp;l'objet&nbsp;dans&nbsp;le&nbsp;fichier&nbsp;data.csv.</span></dd></dl>
+ <dl><dt><a name="-modif_database"><strong>modif_database</strong></a>(shell_obj, shell_obj_list, file_csv, shell_head, key=None, value=None, mode=None)</dt><dd><span class="code">Modifie&nbsp;la&nbsp;data&nbsp;dans&nbsp;un&nbsp;fichier&nbsp;csv&nbsp;spécifié.</span></dd></dl>
+ <dl><dt><a name="-print_all_posts"><strong>print_all_posts</strong></a>(thread)</dt><dd><span class="code">print&nbsp;et&nbsp;renvoie&nbsp;le&nbsp;nombre&nbsp;de&nbsp;post</span></dd></dl>
+ <dl><dt><a name="-print_all_thread"><strong>print_all_thread</strong></a>()</dt><dd><span class="code">print&nbsp;et&nbsp;renvoie&nbsp;le&nbsp;nombre&nbsp;de&nbsp;thread</span></dd></dl>
+ <dl><dt><a name="-verif_data"><strong>verif_data</strong></a>(file_csv, shell_obj)</dt><dd><span class="code">Vérifie&nbsp;l'existance&nbsp;d'une&nbsp;data&nbsp;dans&nbsp;le&nbsp;fichier&nbsp;csv.</span></dd></dl>
+</td></tr></table>
+</body></html>
