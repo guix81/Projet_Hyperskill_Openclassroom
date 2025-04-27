@@ -1,1 +1,1 @@
-Apprentissage langage Python.
+Apprentissage langage Python et Assembleur.
